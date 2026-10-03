@@ -13,9 +13,9 @@ def build_catalog():
         "category": "Defense & Aero",
         "folder": "tinkering/frontier_hybrids",
         "url": "https://github.com/am-LLM/tinkering/blob/main/frontier_hybrids/aegis_drone_defense_system.py",
-        "desc": "Cost-asymmetric kinetic C-UAS/C-USV interceptor with passive acoustic TDoA triangulation and 15-state ES-EKF optical flow.",
+        "desc": "Cost-asymmetric kinetic C-UAS/C-USV interceptor solving the $15k vs $2M missile dilemma with passive acoustic TDoA triangulation and 15-state ES-EKF optical flow.",
         "tags": ["C-UAS", "TDoA", "True Proportional Nav", "Defense", "EKF"],
-        "size": 3.0,
+        "size": 3.8,
         "cluster": "defense"
     })
 
@@ -35,7 +35,6 @@ def build_catalog():
                 if len(lines) > 1:
                     desc = " ".join(lines[1:3])[:190]
         
-        # Determine cluster
         lname = name.lower()
         if any(w in lname for w in ["ai", "thought", "cognitron", "guardrail", "jailbreak", "snn", "compiler", "pruning", "llm"]):
             cluster = "ai"
@@ -46,13 +45,14 @@ def build_catalog():
         elif any(w in lname for w in ["quantum", "cryocooler", "perovskite", "superconducting", "mram", "fluxon", "seebeck", "laser", "das"]):
             cluster = "quantum"
             cat = "Quantum & Energy"
-        elif any(w in lname for w in ["scada", "radar", "sonar", "hypersonic", "plasma", "sail", "debris", "damper", "thruster", "ew", "traffic", "damper"]):
+        elif any(w in lname for w in ["scada", "radar", "sonar", "hypersonic", "plasma", "sail", "debris", "damper", "thruster", "ew", "traffic"]):
             cluster = "defense"
             cat = "Defense & Aero"
         else:
             cluster = "frontier"
             cat = "Frontier Engines"
 
+        is_flagship = any(k in name for k in ["68", "69", "70", "67", "66", "51", "04", "01"])
         topics.append({
             "id": name,
             "name": clean_name,
@@ -61,7 +61,7 @@ def build_catalog():
             "url": f"https://github.com/am-LLM/tinkering/blob/main/frontier_hybrids/{name}.py",
             "desc": desc,
             "tags": ["Frontier Engine", "Math Solver", "Python 3.14"],
-            "size": 2.2 if "68" in name or "69" in name or "70" in name or "67" in name or "66" in name else 1.6,
+            "size": 3.0 if is_flagship else 2.2,
             "cluster": cluster
         })
 
@@ -87,15 +87,15 @@ def build_catalog():
             "url": f"https://github.com/am-LLM/tinkering/tree/main/domain_laboratories/{folder}",
             "desc": desc,
             "tags": ["Domain Lab", "Empirical Testbed"],
-            "size": 2.4,
+            "size": 3.2,
             "cluster": cluster
         })
 
     # 4. Enterprise Business Strategy & Market Analysis
     strategy_topics = [
-        ("Quantitative Valuation & Financial Modeling", "DCF valuation, sensitivity matrices, unit economics (LTV/CAC), and capital allocation frameworks.", ["Valuation", "DCF", "LTV/CAC", "Financial Modeling"]),
+        ("Quantitative Valuation & DCF Financial Modeling", "DCF valuation, sensitivity matrices, unit economics (LTV/CAC), and capital allocation frameworks.", ["Valuation", "DCF", "LTV/CAC", "Financial Modeling"]),
         ("Go-To-Market (GTM) Strategy & TAM Sizing", "Asymmetric market entry frameworks, bottom-up TAM/SAM/SOM market sizing, and pricing strategies.", ["GTM", "Market Sizing", "TAM/SAM", "Pricing"]),
-        ("Product-Led Growth (PLG) & Viral Mechanics", "Behavioral viral loops, K-factor optimization, activation funnel engineering, and organic product adoption.", ["PLG", "Viral Loops", "Growth", "Retention"]),
+        ("Product-Led Growth (PLG) & Viral Dynamics", "Behavioral viral loops, K-factor optimization, activation funnel engineering, and organic product adoption.", ["PLG", "Viral Loops", "Growth", "Retention"]),
         ("Enterprise Risk, QHSE & ISO 22301 BCM", "Business Continuity Management, NIST SP 800-30 threat modeling, and crisis continuity architecture.", ["BCM", "ISO 22301", "NIST SP 800-30", "Risk"]),
         ("Competitive Intelligence & Supply-Chain OSINT", "Systematic open-source market intelligence, competitor vulnerability auditing, and supply-chain mapping.", ["OSINT", "Competitive Intel", "Supply Chain"]),
         ("Venture Capital Term Sheets & Governance", "Cap table modeling, liquidation preference analysis, vesting frameworks, and board governance.", ["Venture Capital", "Term Sheets", "Governance"]),
@@ -110,7 +110,7 @@ def build_catalog():
             "url": "https://github.com/am-LLM/am-LLM#1--business-strategy-market-analysis--growth",
             "desc": desc,
             "tags": tags,
-            "size": 2.5,
+            "size": 3.4,
             "cluster": "strategy"
         })
 
@@ -132,11 +132,11 @@ def build_catalog():
             "url": "https://github.com/am-LLM/am-LLM#2--ai-project-management--applied-engineering-leadership",
             "desc": desc,
             "tags": tags,
-            "size": 2.5,
+            "size": 3.4,
             "cluster": "ai"
         })
 
-    # 6. Continuum Fields (Sample of key fields across the 418 continuum)
+    # 6. Continuum Fields
     continuum_fields = sorted(glob.glob("/Users/alimalik/tinkering/engineering_continuum/field_*"))
     for f in continuum_fields:
         name = os.path.basename(f)
@@ -151,7 +151,7 @@ def build_catalog():
             "url": f"https://github.com/am-LLM/tinkering/tree/main/engineering_continuum/{name}",
             "desc": f"Empirical field investigation module covering verified mathematical mechanics, algorithms, and simulation models for {title.lower()}.",
             "tags": ["Continuum", f"Field {num}", "Mathematical Simulation"],
-            "size": 1.0,
+            "size": 1.5,
             "cluster": "continuum"
         })
 
@@ -169,21 +169,73 @@ def generate_html():
     <title>Ali Malik (@am-LLM) — 3D Universal Knowledge Starmap</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {{
-            --bg: #030712;
-            --panel: rgba(15, 23, 42, 0.85);
-            --border: rgba(56, 189, 248, 0.2);
-            --border-hover: rgba(56, 189, 248, 0.6);
-            --cyan: #38bdf8;
-            --gold: #fbbf24;
-            --crimson: #f43f5e;
-            --emerald: #34d399;
-            --violet: #a855f7;
-            --text: #f8fafc;
+            /* Default Cyber Neon Theme */
+            --bg-color: #060d1f;
+            --bg-grad: radial-gradient(circle at 50% 50%, #0d1b38 0%, #081126 50%, #030712 100%);
+            --panel: rgba(13, 23, 48, 0.94);
+            --panel-border: rgba(0, 240, 255, 0.45);
+            --primary: #00f0ff;
+            --accent: #d946ef;
+            --text: #ffffff;
+            --text-secondary: #cbd5e1;
             --text-dim: #94a3b8;
+            --glow: rgba(0, 240, 255, 0.4);
         }}
+
+        /* Theme Presets */
+        body.theme-cyber {{
+            --bg-color: #060d1f;
+            --bg-grad: radial-gradient(circle at 50% 50%, #0e1e3e 0%, #081126 50%, #030712 100%);
+            --panel: rgba(13, 23, 48, 0.94);
+            --panel-border: rgba(0, 240, 255, 0.45);
+            --primary: #00f0ff;
+            --accent: #d946ef;
+            --glow: rgba(0, 240, 255, 0.4);
+        }}
+
+        body.theme-solar {{
+            --bg-color: #1a0f05;
+            --bg-grad: radial-gradient(circle at 50% 50%, #381f08 0%, #1f1105 50%, #0a0602 100%);
+            --panel: rgba(38, 22, 10, 0.94);
+            --panel-border: rgba(251, 191, 36, 0.5);
+            --primary: #fbbf24;
+            --accent: #f43f5e;
+            --glow: rgba(251, 191, 36, 0.45);
+        }}
+
+        body.theme-cobalt {{
+            --bg-color: #040e26;
+            --bg-grad: radial-gradient(circle at 50% 50%, #0a2560 0%, #06163b 50%, #020717 100%);
+            --panel: rgba(8, 25, 66, 0.94);
+            --panel-border: rgba(56, 189, 248, 0.5);
+            --primary: #38bdf8;
+            --accent: #818cf8;
+            --glow: rgba(56, 189, 248, 0.45);
+        }}
+
+        body.theme-matrix {{
+            --bg-color: #03140b;
+            --bg-grad: radial-gradient(circle at 50% 50%, #062b17 0%, #041a0e 50%, #010a05 100%);
+            --panel: rgba(6, 36, 20, 0.94);
+            --panel-border: rgba(52, 211, 153, 0.5);
+            --primary: #00ffaa;
+            --accent: #a3e635;
+            --glow: rgba(0, 255, 170, 0.45);
+        }}
+
+        body.theme-slate {{
+            --bg-color: #0f172a;
+            --bg-grad: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 50%, #020617 100%);
+            --panel: rgba(30, 41, 59, 0.95);
+            --panel-border: rgba(148, 163, 184, 0.5);
+            --primary: #ffffff;
+            --accent: #38bdf8;
+            --glow: rgba(255, 255, 255, 0.35);
+        }}
+
         * {{
             margin: 0;
             padding: 0;
@@ -191,12 +243,14 @@ def generate_html():
             user-select: none;
         }}
         body {{
-            background: var(--bg);
+            background: var(--bg-color);
+            background-image: var(--bg-grad);
             color: var(--text);
             font-family: 'Outfit', -apple-system, sans-serif;
             overflow: hidden;
             width: 100vw;
             height: 100vh;
+            transition: background 0.4s ease;
         }}
         #webgl-canvas {{
             position: absolute;
@@ -218,7 +272,7 @@ def generate_html():
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 20px;
+            padding: 16px 20px;
         }}
         .hud-layer * {{
             pointer-events: auto;
@@ -229,80 +283,85 @@ def generate_html():
             justify-content: space-between;
             align-items: center;
             background: var(--panel);
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--border);
+            backdrop-filter: blur(24px);
+            border: 1px solid var(--panel-border);
             border-radius: 16px;
-            padding: 12px 24px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            gap: 16px;
+            padding: 10px 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 0 20px var(--glow);
+            gap: 12px;
             flex-wrap: wrap;
+            transition: all 0.3s ease;
         }}
         .brand-title {{
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }}
         .brand-title h1 {{
             font-size: 1.15rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #fff, var(--cyan));
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            background: linear-gradient(135deg, #ffffff 30%, var(--primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }}
         .brand-badge {{
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.72rem;
-            background: rgba(56, 189, 248, 0.15);
-            color: var(--cyan);
-            border: 1px solid var(--border);
+            font-size: 0.7rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--primary);
+            border: 1px solid var(--panel-border);
             padding: 3px 8px;
             border-radius: 6px;
-            font-weight: 600;
+            font-weight: 700;
         }}
         /* Search Box */
         .search-container {{
             position: relative;
             flex: 1;
-            max-width: 380px;
+            max-width: 320px;
         }}
         .search-input {{
             width: 100%;
-            background: rgba(2, 6, 23, 0.7);
-            border: 1px solid var(--border);
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--panel-border);
             border-radius: 10px;
             padding: 8px 14px 8px 36px;
-            color: #fff;
+            color: #ffffff;
             font-family: 'Outfit', sans-serif;
             font-size: 0.88rem;
+            font-weight: 500;
             outline: none;
             transition: all 0.2s ease;
         }}
+        .search-input::placeholder {{
+            color: var(--text-dim);
+        }}
         .search-input:focus {{
-            border-color: var(--cyan);
-            box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
-            background: rgba(2, 6, 23, 0.95);
+            border-color: var(--primary);
+            box-shadow: 0 0 14px var(--glow);
+            background: rgba(0, 0, 0, 0.7);
         }}
         .search-icon {{
             position: absolute;
             left: 12px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--text-dim);
-            font-size: 0.85rem;
+            color: var(--primary);
+            font-size: 0.9rem;
         }}
         /* Category Filters */
         .category-filters {{
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
         }}
         .filter-btn {{
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: var(--text-dim);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--text-secondary);
             font-size: 0.78rem;
-            font-weight: 600;
+            font-weight: 700;
             padding: 6px 12px;
             border-radius: 8px;
             cursor: pointer;
@@ -312,62 +371,86 @@ def generate_html():
             gap: 6px;
         }}
         .filter-btn:hover, .filter-btn.active {{
-            background: rgba(56, 189, 248, 0.2);
-            color: #fff;
-            border-color: var(--cyan);
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+            background: rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 0 12px var(--glow);
+            transform: translateY(-1px);
         }}
         .filter-btn .dot {{
             width: 7px;
             height: 7px;
             border-radius: 50%;
+            box-shadow: 0 0 8px currentColor;
         }}
-        /* Action Controls */
+        /* Action Controls & Theme Picker */
         .controls-group {{
             display: flex;
+            align-items: center;
             gap: 8px;
         }}
-        .ctrl-btn {{
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 8px 12px;
+        .theme-selector {{
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--panel-border);
+            color: var(--primary);
+            padding: 6px 10px;
             border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
             font-size: 0.8rem;
-            font-weight: 600;
+            font-weight: 700;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }}
+        .theme-selector:hover {{
+            box-shadow: 0 0 10px var(--glow);
+        }}
+        .theme-selector option {{
+            background: #0b142c;
+            color: #fff;
+        }}
+        .ctrl-btn {{
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--panel-border);
+            color: var(--text);
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }}
         .ctrl-btn:hover {{
-            background: var(--cyan);
+            background: var(--primary);
             color: #030712;
-            border-color: var(--cyan);
+            border-color: var(--primary);
+            box-shadow: 0 0 12px var(--glow);
         }}
         /* Side HUD Card / Modal */
         .side-panel {{
             position: absolute;
             right: 20px;
-            top: 90px;
-            width: 380px;
-            max-height: calc(100vh - 120px);
+            top: 80px;
+            width: 410px;
+            max-height: calc(100vh - 110px);
             background: var(--panel);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
+            backdrop-filter: blur(28px);
+            border: 1px solid var(--panel-border);
             border-radius: 20px;
             padding: 24px;
-            box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px var(--glow);
             display: none;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
             z-index: 20;
             overflow-y: auto;
             animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }}
         @keyframes slideIn {{
-            from {{ opacity: 0; transform: translateX(30px); }}
+            from {{ opacity: 0; transform: translateX(40px); }}
             to {{ opacity: 1; transform: translateX(0); }}
         }}
         .side-panel.open {{
@@ -377,45 +460,60 @@ def generate_html():
             position: absolute;
             top: 16px;
             right: 16px;
-            background: transparent;
-            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
             color: var(--text-dim);
-            font-size: 1.2rem;
+            font-size: 0.95rem;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
         }}
         .panel-close:hover {{
             color: #fff;
+            background: rgba(244, 63, 94, 0.4);
+            border-color: #f43f5e;
         }}
         .panel-cat-badge {{
             display: inline-block;
             align-self: flex-start;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.72rem;
-            font-weight: 700;
+            font-size: 0.74rem;
+            font-weight: 800;
             text-transform: uppercase;
             padding: 4px 10px;
-            border-radius: 6px;
+            border-radius: 8px;
             letter-spacing: 0.05em;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            text-shadow: 0 0 10px var(--glow);
         }}
         .panel-title {{
             font-size: 1.3rem;
-            font-weight: 700;
+            font-weight: 800;
             line-height: 1.3;
-            color: #fff;
+            color: #ffffff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
         }}
         .panel-folder {{
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            background: rgba(0, 0, 0, 0.4);
-            padding: 6px 10px;
-            border-radius: 6px;
+            font-size: 0.78rem;
+            color: var(--primary);
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 7px 11px;
+            border-radius: 8px;
             word-break: break-all;
         }}
         .panel-desc {{
-            font-size: 0.9rem;
+            font-size: 0.92rem;
             line-height: 1.6;
-            color: #cbd5e1;
+            color: #e2e8f0;
         }}
         .panel-tags {{
             display: flex;
@@ -425,11 +523,12 @@ def generate_html():
         .tag-pill {{
             font-size: 0.7rem;
             font-family: 'JetBrains Mono', monospace;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #94a3b8;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #e2e8f0;
             padding: 3px 8px;
-            border-radius: 4px;
+            border-radius: 6px;
         }}
         .panel-btn {{
             margin-top: 8px;
@@ -437,46 +536,49 @@ def generate_html():
             align-items: center;
             justify-content: center;
             gap: 8px;
-            background: linear-gradient(135deg, var(--cyan), #0284c7);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             color: #030712;
             text-decoration: none;
-            font-weight: 700;
-            font-size: 0.88rem;
+            font-weight: 800;
+            font-size: 0.9rem;
             padding: 12px 18px;
-            border-radius: 10px;
+            border-radius: 12px;
             transition: all 0.2s;
-            box-shadow: 0 4px 14px rgba(56, 189, 248, 0.35);
+            box-shadow: 0 6px 20px var(--glow);
         }}
         .panel-btn:hover {{
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.5);
+            box-shadow: 0 8px 28px var(--glow);
+            filter: brightness(1.1);
         }}
         /* Hover Tooltip */
         #tooltip {{
             position: absolute;
             pointer-events: none;
-            background: rgba(15, 23, 42, 0.92);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border);
+            background: var(--panel);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--primary);
             padding: 10px 16px;
             border-radius: 12px;
-            color: #fff;
-            font-size: 0.82rem;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            color: #ffffff;
+            font-size: 0.85rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px var(--glow);
             display: none;
             z-index: 30;
-            max-width: 280px;
+            max-width: 290px;
             transform: translate(15px, 15px);
         }}
         #tooltip .t-cat {{
-            font-size: 0.68rem;
+            font-size: 0.7rem;
             font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
+            font-weight: 800;
             margin-bottom: 2px;
+            text-transform: uppercase;
         }}
         #tooltip .t-title {{
             font-weight: 700;
-            font-size: 0.88rem;
+            font-size: 0.92rem;
+            color: #ffffff;
         }}
         /* Footer Bar */
         .footer-bar {{
@@ -485,20 +587,23 @@ def generate_html():
             align-items: center;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem;
-            color: var(--text-dim);
+            color: var(--text-secondary);
             background: var(--panel);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--panel-border);
             border-radius: 12px;
             padding: 8px 18px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
         }}
         .footer-links a {{
-            color: var(--cyan);
+            color: var(--primary);
             text-decoration: none;
+            font-weight: 700;
             margin-left: 14px;
         }}
         .footer-links a:hover {{
             text-decoration: underline;
+            text-shadow: 0 0 8px var(--primary);
         }}
         /* Search Dropdown */
         .search-results {{
@@ -508,36 +613,37 @@ def generate_html():
             width: 100%;
             max-height: 320px;
             overflow-y: auto;
-            background: rgba(15, 23, 42, 0.96);
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--border);
+            background: var(--panel);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
             border-radius: 12px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.8), 0 0 20px var(--glow);
             display: none;
             z-index: 100;
         }}
         .search-result-item {{
             padding: 10px 14px;
             cursor: pointer;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
             transition: all 0.15s;
         }}
         .search-result-item:hover {{
-            background: rgba(56, 189, 248, 0.15);
+            background: rgba(255, 255, 255, 0.15);
         }}
         .search-result-item .s-title {{
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #fff;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #ffffff;
         }}
         .search-result-item .s-cat {{
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             font-family: 'JetBrains Mono', monospace;
-            color: var(--cyan);
+            color: var(--primary);
+            margin-top: 2px;
         }}
     </style>
 </head>
-<body>
+<body class="theme-cyber">
     <canvas id="webgl-canvas"></canvas>
 
     <div class="hud-layer">
@@ -551,23 +657,30 @@ def generate_html():
             <!-- Real-time Search -->
             <div class="search-container">
                 <span class="search-icon">🔍</span>
-                <input type="text" id="search-box" class="search-input" placeholder="Warp to topic (e.g. BCI, Jailbreak, Valuation, SCADA, TDoA)..." autocomplete="off">
+                <input type="text" id="search-box" class="search-input" placeholder="Search any topic (e.g. BCI, Jailbreak, Valuation, SCADA)..." autocomplete="off">
                 <div id="search-results" class="search-results"></div>
             </div>
 
             <!-- Category Filters -->
             <div class="category-filters">
-                <button class="filter-btn active" data-cat="all"><span class="dot" style="background: #fff;"></span> All Galaxy</button>
-                <button class="filter-btn" data-cat="Frontier Engines"><span class="dot" style="background: var(--cyan);"></span> 70 Engines</button>
-                <button class="filter-btn" data-cat="Business Strategy"><span class="dot" style="background: var(--gold);"></span> Strategy & Valuation</button>
-                <button class="filter-btn" data-cat="AI & QA"><span class="dot" style="background: var(--violet);"></span> AI & QA Testing</button>
-                <button class="filter-btn" data-cat="Defense & Aero"><span class="dot" style="background: var(--crimson);"></span> Defense & Aero</button>
-                <button class="filter-btn" data-cat="Bionics & Bio"><span class="dot" style="background: var(--emerald);"></span> BCI & Interspecies</button>
-                <button class="filter-btn" data-cat="Continuum Fields"><span class="dot" style="background: #94a3b8;"></span> 418 Continuum</button>
+                <button class="filter-btn active" data-cat="all"><span class="dot" style="background: #ffffff;"></span> All Galaxy</button>
+                <button class="filter-btn" data-cat="Frontier Engines"><span class="dot" style="background: #00f0ff;"></span> 70 Engines</button>
+                <button class="filter-btn" data-cat="Business Strategy"><span class="dot" style="background: #ffd166;"></span> Strategy & Valuation</button>
+                <button class="filter-btn" data-cat="AI & QA"><span class="dot" style="background: #d946ef;"></span> AI & QA Testing</button>
+                <button class="filter-btn" data-cat="Defense & Aero"><span class="dot" style="background: #ff3366;"></span> Defense & Aero</button>
+                <button class="filter-btn" data-cat="Bionics & Bio"><span class="dot" style="background: #00ffaa;"></span> BCI & Bio</button>
+                <button class="filter-btn" data-cat="Continuum Fields"><span class="dot" style="background: #a5b4fc;"></span> 418 Continuum</button>
             </div>
 
-            <!-- Controls -->
+            <!-- Action Controls & Theme Picker -->
             <div class="controls-group">
+                <select id="theme-select" class="theme-selector" title="Select Theme Palette">
+                    <option value="theme-cyber">⚡ Cyber Neon</option>
+                    <option value="theme-solar">☀️ Solar Flare</option>
+                    <option value="theme-cobalt">🌌 Deep Cobalt</option>
+                    <option value="theme-matrix">🧬 Matrix Emerald</option>
+                    <option value="theme-slate">⚪ Crisp Slate</option>
+                </select>
                 <button id="reset-cam-btn" class="ctrl-btn" title="Reset Galaxy View">🔄 Reset</button>
                 <button id="audio-toggle-btn" class="ctrl-btn" title="Toggle Synthesizer Sound FX">🔊 Sound</button>
             </div>
@@ -595,7 +708,7 @@ def generate_html():
 
         <!-- Footer Bar -->
         <footer class="footer-bar">
-            <div>🚀 <b>Navigation:</b> Left-Click + Drag: Rotate | Scroll: Zoom | Right-Click: Pan | Click Star: Warp & Inspect</div>
+            <div>🚀 <b>Controls:</b> Left-Click + Drag: Rotate | Scroll: Zoom | Right-Click: Pan | Click Star: Warp & Inspect</div>
             <div class="footer-links">
                 <a href="https://github.com/am-LLM" target="_blank">GitHub Profile</a>
                 <a href="https://github.com/am-LLM/tinkering" target="_blank">Tinkering Master Repo</a>
@@ -612,28 +725,109 @@ def generate_html():
         // Topic Data Catalog
         const TOPICS = {topics_json};
 
-        // Category Palette Mapping
-        const CATEGORY_COLORS = {{
-            "Frontier Engines": 0x38bdf8,   // Cyan
-            "Business Strategy": 0xfbbf24,  // Gold
-            "AI & QA": 0xa855f7,            // Violet
-            "Defense & Aero": 0xf43f5e,     // Crimson
-            "Bionics & Bio": 0x34d399,      // Emerald
-            "Quantum & Energy": 0x38bdf8,   // Blue
-            "Continuum Fields": 0x64748b    // Slate
+        // Theme Palettes
+        const THEMES = {{
+            "theme-cyber": {{
+                name: "Cyber Neon",
+                catColors: {{
+                    "Frontier Engines": 0x00f0ff,
+                    "Business Strategy": 0xffd166,
+                    "AI & QA": 0xd946ef,
+                    "Defense & Aero": 0xff3366,
+                    "Bionics & Bio": 0x00ffaa,
+                    "Quantum & Energy": 0x38bdf8,
+                    "Continuum Fields": 0xa5b4fc
+                }},
+                lineColor: 0x00f0ff,
+                ambientColor: 0xffffff,
+                pointColor1: 0x00f0ff,
+                pointColor2: 0xffd166,
+                fogColor: 0x060d1f
+            }},
+            "theme-solar": {{
+                name: "Solar Flare",
+                catColors: {{
+                    "Frontier Engines": 0xfbbf24,
+                    "Business Strategy": 0xf59e0b,
+                    "AI & QA": 0xf43f5e,
+                    "Defense & Aero": 0xe11d48,
+                    "Bionics & Bio": 0xd97706,
+                    "Quantum & Energy": 0xfef08a,
+                    "Continuum Fields": 0xfde68a
+                }},
+                lineColor: 0xfbbf24,
+                ambientColor: 0xfffbeb,
+                pointColor1: 0xfbbf24,
+                pointColor2: 0xf43f5e,
+                fogColor: 0x1a0f05
+            }},
+            "theme-cobalt": {{
+                name: "Deep Cobalt",
+                catColors: {{
+                    "Frontier Engines": 0x38bdf8,
+                    "Business Strategy": 0x60a5fa,
+                    "AI & QA": 0x818cf8,
+                    "Defense & Aero": 0x3b82f6,
+                    "Bionics & Bio": 0x06b6d4,
+                    "Quantum & Energy": 0x93c5fd,
+                    "Continuum Fields": 0xbfdbfe
+                }},
+                lineColor: 0x38bdf8,
+                ambientColor: 0xf0f9ff,
+                pointColor1: 0x38bdf8,
+                pointColor2: 0x818cf8,
+                fogColor: 0x040e26
+            }},
+            "theme-matrix": {{
+                name: "Matrix Emerald",
+                catColors: {{
+                    "Frontier Engines": 0x00ffaa,
+                    "Business Strategy": 0xa3e635,
+                    "AI & QA": 0x10b981,
+                    "Defense & Aero": 0x059669,
+                    "Bionics & Bio": 0x34d399,
+                    "Quantum & Energy": 0x6ee7b7,
+                    "Continuum Fields": 0xa7f3d0
+                }},
+                lineColor: 0x00ffaa,
+                ambientColor: 0xecfdf5,
+                pointColor1: 0x00ffaa,
+                pointColor2: 0xa3e635,
+                fogColor: 0x03140b
+            }},
+            "theme-slate": {{
+                name: "Crisp Slate",
+                catColors: {{
+                    "Frontier Engines": 0xffffff,
+                    "Business Strategy": 0xf1f5f9,
+                    "AI & QA": 0x38bdf8,
+                    "Defense & Aero": 0xf43f5e,
+                    "Bionics & Bio": 0x4ade80,
+                    "Quantum & Energy": 0xe2e8f0,
+                    "Continuum Fields": 0x94a3b8
+                }},
+                lineColor: 0xffffff,
+                ambientColor: 0xffffff,
+                pointColor1: 0xffffff,
+                pointColor2: 0x38bdf8,
+                fogColor: 0x0f172a
+            }}
         }};
+
+        let currentThemeKey = localStorage.getItem("starmap_theme") || "theme-cyber";
+        let activeTheme = THEMES[currentThemeKey] || THEMES["theme-cyber"];
 
         const CLUSTER_CENTERS = {{
-            "defense": {{ x: -140, y: 30, z: -80 }},
-            "ai": {{ x: 0, y: 70, z: 0 }},
-            "strategy": {{ x: 130, y: 40, z: 70 }},
-            "bio": {{ x: -70, y: -60, z: 120 }},
-            "quantum": {{ x: 90, y: -50, z: -100 }},
-            "frontier": {{ x: -40, y: 20, z: -120 }},
-            "continuum": {{ x: 0, y: -20, z: 0 }}
+            "defense": {{ x: -140, y: 35, z: -80 }},
+            "ai": {{ x: 0, y: 75, z: 0 }},
+            "strategy": {{ x: 135, y: 45, z: 75 }},
+            "bio": {{ x: -75, y: -65, z: 125 }},
+            "quantum": {{ x: 95, y: -55, z: -105 }},
+            "frontier": {{ x: -45, y: 25, z: -125 }},
+            "continuum": {{ x: 0, y: -25, z: 0 }}
         }};
 
-        // Web Audio Synthesizer (Zero asset dependency)
+        // Web Audio Synthesizer
         let audioCtx = null;
         let soundEnabled = true;
 
@@ -645,7 +839,7 @@ def generate_html():
                 const gain = audioCtx.createGain();
                 osc.type = type;
                 osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.35);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
@@ -657,9 +851,9 @@ def generate_html():
         // Scene, Camera, Renderer
         const canvas = document.getElementById("webgl-canvas");
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x030712, 0.0018);
+        scene.fog = new THREE.FogExp2(activeTheme.fogColor, 0.00025);
 
-        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 3000);
+        const camera = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 4000);
         camera.position.set(0, 160, 360);
 
         const renderer = new THREE.WebGLRenderer({{ canvas, antialias: true, alpha: true }});
@@ -669,49 +863,99 @@ def generate_html():
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
-        controls.maxDistance = 900;
-        controls.minDistance = 20;
+        controls.maxDistance = 1100;
+        controls.minDistance = 15;
         controls.autoRotate = true;
-        controls.autoRotateSpeed = 0.4;
+        controls.autoRotateSpeed = 0.35;
 
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        // Lights
+        const ambientLight = new THREE.AmbientLight(activeTheme.ambientColor, 1.4);
         scene.add(ambientLight);
 
-        // Cosmic Starfield Background
+        const pointLight1 = new THREE.PointLight(activeTheme.pointColor1, 2.0, 800);
+        pointLight1.position.set(0, 100, 100);
+        scene.add(pointLight1);
+
+        const pointLight2 = new THREE.PointLight(activeTheme.pointColor2, 1.8, 800);
+        pointLight2.position.set(120, -60, -100);
+        scene.add(pointLight2);
+
+        // Background Starfield
         const starGeo = new THREE.BufferGeometry();
-        const starCount = 3500;
+        const starCount = 4000;
         const starPos = new Float32Array(starCount * 3);
         for (let i = 0; i < starCount * 3; i += 3) {{
-            starPos[i] = (Math.random() - 0.5) * 2000;
-            starPos[i+1] = (Math.random() - 0.5) * 2000;
-            starPos[i+2] = (Math.random() - 0.5) * 2000;
+            starPos[i] = (Math.random() - 0.5) * 2200;
+            starPos[i+1] = (Math.random() - 0.5) * 2200;
+            starPos[i+2] = (Math.random() - 0.5) * 2200;
         }}
         starGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
-        const starMat = new THREE.PointsMaterial({{ color: 0x94a3b8, size: 1.2, transparent: true, opacity: 0.6 }});
+        const starMat = new THREE.PointsMaterial({{ color: 0xe2e8f0, size: 1.8, transparent: true, opacity: 0.75 }});
         const starPoints = new THREE.Points(starGeo, starMat);
         scene.add(starPoints);
 
-        // Nebula Clouds (Glowing billowy particles)
+        // Glowing Volumetric Nebula Gas Spheres
         const nebulaGroup = new THREE.Group();
+        const nebulaMeshes = [];
         for (const [key, center] of Object.entries(CLUSTER_CENTERS)) {{
-            const nebGeo = new THREE.SphereGeometry(35, 12, 12);
-            let nColor = 0x38bdf8;
-            if (key === "strategy") nColor = 0xfbbf24;
-            if (key === "ai") nColor = 0xa855f7;
-            if (key === "defense") nColor = 0xf43f5e;
-            if (key === "bio") nColor = 0x34d399;
+            const nebGeo = new THREE.SphereGeometry(45, 16, 16);
             const nebMat = new THREE.MeshBasicMaterial({{
-                color: nColor,
+                color: activeTheme.lineColor,
                 wireframe: true,
                 transparent: true,
-                opacity: 0.04
+                opacity: 0.08
             }});
             const nebMesh = new THREE.Mesh(nebGeo, nebMat);
             nebMesh.position.set(center.x, center.y, center.z);
             nebulaGroup.add(nebMesh);
+            nebulaMeshes.push(nebMesh);
         }}
         scene.add(nebulaGroup);
+
+        // 3D Text Billboards for Sector Labels
+        function createTextSprite(text, colorHex) {{
+            const canvas = document.createElement("canvas");
+            canvas.width = 512;
+            canvas.height = 128;
+            const ctx = canvas.getContext("2d");
+            ctx.fillStyle = "rgba(10, 20, 45, 0.8)";
+            ctx.strokeStyle = colorHex;
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.roundRect(10, 10, 492, 108, 16);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.font = "bold 34px 'Outfit', sans-serif";
+            ctx.fillStyle = "#ffffff";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.shadowColor = colorHex;
+            ctx.shadowBlur = 14;
+            ctx.fillText(text, 256, 64);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const mat = new THREE.SpriteMaterial({{ map: texture, transparent: true, opacity: 0.95 }});
+            const sprite = new THREE.Sprite(mat);
+            sprite.scale.set(40, 10, 1);
+            return sprite;
+        }}
+
+        const sectorLabels = [
+            {{ name: "⚡ 70 FRONTIER ENGINES", pos: CLUSTER_CENTERS["frontier"], col: "#00f0ff" }},
+            {{ name: "📈 BUSINESS & VALUATION", pos: CLUSTER_CENTERS["strategy"], col: "#ffd166" }},
+            {{ name: "🤖 AI SWARMS & QA", pos: CLUSTER_CENTERS["ai"], col: "#d946ef" }},
+            {{ name: "🛡️ DEFENSE & AERO", pos: CLUSTER_CENTERS["defense"], col: "#ff3366" }},
+            {{ name: "🧬 BCI & INTERSPECIES", pos: CLUSTER_CENTERS["bio"], col: "#00ffaa" }},
+            {{ name: "⚡ QUANTUM & SCADA", pos: CLUSTER_CENTERS["quantum"], col: "#38bdf8" }},
+            {{ name: "📚 418 FIELD CONTINUUM", pos: {{ x: 0, y: -75, z: 0 }}, col: "#a5b4fc" }}
+        ];
+
+        sectorLabels.forEach(s => {{
+            const lbl = createTextSprite(s.name, s.col);
+            lbl.position.set(s.pos.x, s.pos.y + 40, s.pos.z);
+            scene.add(lbl);
+        }});
 
         // Node Mesh Representation
         const nodeMeshes = [];
@@ -719,19 +963,20 @@ def generate_html():
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
 
-        // Node Texture Generator
+        // Glow Sprite Texture Generator
         function createGlowSprite(colorHex) {{
             const canvas = document.createElement("canvas");
-            canvas.width = 64;
-            canvas.height = 64;
+            canvas.width = 128;
+            canvas.height = 128;
             const ctx = canvas.getContext("2d");
-            const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+            const grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
             grad.addColorStop(0, "#ffffff");
-            grad.addColorStop(0.2, colorHex);
-            grad.addColorStop(0.6, colorHex + "44");
+            grad.addColorStop(0.25, colorHex);
+            grad.addColorStop(0.55, colorHex + "bb");
+            grad.addColorStop(0.85, colorHex + "33");
             grad.addColorStop(1, "transparent");
             ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, 64, 64);
+            ctx.fillRect(0, 0, 128, 128);
             return new THREE.CanvasTexture(canvas);
         }}
 
@@ -741,21 +986,19 @@ def generate_html():
             let pos;
 
             if (item.cluster === "continuum") {{
-                // Spiral disc layout for continuum
-                const angle = index * 0.15;
-                const radius = 60 + Math.sqrt(index) * 11;
+                const angle = index * 0.16;
+                const radius = 65 + Math.sqrt(index) * 11.5;
                 pos = new THREE.Vector3(
-                    cluster.x + Math.cos(angle) * radius + (Math.random() - 0.5) * 20,
-                    cluster.y + (Math.random() - 0.5) * 35,
-                    cluster.z + Math.sin(angle) * radius + (Math.random() - 0.5) * 20
+                    cluster.x + Math.cos(angle) * radius + (Math.random() - 0.5) * 22,
+                    cluster.y + (Math.random() - 0.5) * 38,
+                    cluster.z + Math.sin(angle) * radius + (Math.random() - 0.5) * 22
                 );
             }} else {{
-                // Clustered sphere layout
                 const u = Math.random();
                 const v = Math.random();
                 const theta = u * 2.0 * Math.PI;
                 const phi = Math.acos(2.0 * v - 1.0);
-                const r = Math.cbrt(Math.random()) * 48;
+                const r = Math.cbrt(Math.random()) * 52;
                 pos = new THREE.Vector3(
                     cluster.x + r * Math.sin(phi) * Math.cos(theta),
                     cluster.y + r * Math.sin(phi) * Math.sin(theta),
@@ -763,7 +1006,7 @@ def generate_html():
                 );
             }}
 
-            const colHex = CATEGORY_COLORS[item.category] || 0x38bdf8;
+            const colHex = activeTheme.catColors[item.category] || 0x00f0ff;
             const spriteMat = new THREE.SpriteMaterial({{
                 map: createGlowSprite("#" + colHex.toString(16).padStart(6, '0')),
                 color: 0xffffff,
@@ -772,7 +1015,7 @@ def generate_html():
             }});
 
             const sprite = new THREE.Sprite(spriteMat);
-            const scale = (item.size || 1.5) * 5.0;
+            const scale = (item.size || 2.0) * 4.8;
             sprite.scale.set(scale, scale, 1);
             sprite.position.copy(pos);
             sprite.userData = item;
@@ -783,7 +1026,7 @@ def generate_html():
         }});
 
         // Constellation Connecting Lines
-        const lineMat = new THREE.LineBasicMaterial({{ color: 0x38bdf8, transparent: true, opacity: 0.15 }});
+        const lineMat = new THREE.LineBasicMaterial({{ color: activeTheme.lineColor, transparent: true, opacity: 0.3 }});
         const lineGeo = new THREE.BufferGeometry();
         const linePositions = [];
         for (let i = 0; i < nodeMeshes.length; i += 3) {{
@@ -791,7 +1034,7 @@ def generate_html():
                 if (nodeMeshes[i].userData.category === nodeMeshes[j].userData.category) {{
                     const p1 = nodeMeshes[i].position;
                     const p2 = nodeMeshes[j].position;
-                    if (p1.distanceTo(p2) < 55) {{
+                    if (p1.distanceTo(p2) < 65) {{
                         linePositions.push(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
                     }}
                 }}
@@ -801,7 +1044,43 @@ def generate_html():
         const linesMesh = new THREE.LineSegments(lineGeo, lineMat);
         scene.add(linesMesh);
 
-        // UI Interactions
+        // Apply Theme Function
+        function applyTheme(themeKey) {{
+            const theme = THEMES[themeKey];
+            if (!theme) return;
+            currentThemeKey = themeKey;
+            activeTheme = theme;
+            localStorage.setItem("starmap_theme", themeKey);
+
+            document.body.className = themeKey;
+            scene.fog.color.setHex(theme.fogColor);
+            ambientLight.color.setHex(theme.ambientColor);
+            pointLight1.color.setHex(theme.pointColor1);
+            pointLight2.color.setHex(theme.pointColor2);
+            lineMat.color.setHex(theme.lineColor);
+
+            nebulaMeshes.forEach(m => {{
+                m.material.color.setHex(theme.lineColor);
+            }});
+
+            // Update all node sprite textures
+            nodeMeshes.forEach(mesh => {{
+                const colHex = theme.catColors[mesh.userData.category] || 0x00f0ff;
+                mesh.material.map = createGlowSprite("#" + colHex.toString(16).padStart(6, '0'));
+                mesh.material.needsUpdate = true;
+            }});
+
+            playChime(750, "triangle");
+        }}
+
+        // Theme Dropdown Listener
+        const themeSelect = document.getElementById("theme-select");
+        themeSelect.value = currentThemeKey;
+        themeSelect.addEventListener("change", (e) => {{
+            applyTheme(e.target.value);
+        }});
+
+        // UI Element References
         const tooltip = document.getElementById("tooltip");
         const tooltipCat = document.getElementById("tooltip-cat");
         const tooltipTitle = document.getElementById("tooltip-title");
@@ -816,12 +1095,13 @@ def generate_html():
         const searchResults = document.getElementById("search-results");
 
         let hoveredNode = null;
-        let selectedNode = null;
 
         function showPanel(item) {{
+            const colHex = "#" + (activeTheme.catColors[item.category] || 0x00f0ff).toString(16).padStart(6, '0');
             panelCat.textContent = item.category;
-            panelCat.style.background = "rgba(56, 189, 248, 0.2)";
-            panelCat.style.color = "#38bdf8";
+            panelCat.style.color = colHex;
+            panelCat.style.borderColor = colHex;
+            panelCat.style.background = colHex + "22";
             panelTitle.textContent = item.name;
             panelFolder.textContent = item.folder;
             panelDesc.textContent = item.desc;
@@ -838,12 +1118,12 @@ def generate_html():
             sidePanel.classList.add("open");
         }}
 
-        function flyToNode(mesh, targetDist = 45) {{
+        function flyToNode(mesh, targetDist = 42) {{
             controls.autoRotate = false;
             const targetPos = mesh.position.clone();
-            const camTargetPos = targetPos.clone().add(new THREE.Vector3(0, 15, targetDist));
+            const camTargetPos = targetPos.clone().add(new THREE.Vector3(0, 14, targetDist));
 
-            playChime(640, "triangle");
+            playChime(660, "triangle");
 
             new TWEEN.Tween(camera.position)
                 .to(camTargetPos, 1200)
@@ -880,11 +1160,13 @@ def generate_html():
                 const hit = intersects[0].object;
                 if (hoveredNode !== hit) {{
                     hoveredNode = hit;
+                    const colHex = "#" + (activeTheme.catColors[hit.userData.category] || 0x00f0ff).toString(16).padStart(6, '0');
                     tooltipCat.textContent = hit.userData.category;
-                    tooltipCat.style.color = "#38bdf8";
+                    tooltipCat.style.color = colHex;
                     tooltipTitle.textContent = hit.userData.name;
+                    tooltip.style.borderColor = colHex;
                     tooltip.style.display = "block";
-                    playChime(800, "sine");
+                    playChime(850, "sine");
                 }}
             }} else {{
                 if (hoveredNode) {{
@@ -940,7 +1222,7 @@ def generate_html():
                         mesh.visible = false;
                     }}
                 }});
-                playChime(480, "square");
+                playChime(500, "square");
             }});
         }});
 
@@ -1007,15 +1289,12 @@ def generate_html():
 if __name__ == "__main__":
     html_content = generate_html()
     
-    # Write to am-LLM root
     with open("/Users/alimalik/am-LLM/index.html", "w") as fp:
         fp.write(html_content)
     print("Wrote /Users/alimalik/am-LLM/index.html")
 
-    # Write to tinkering root & docs/
     with open("/Users/alimalik/tinkering/index.html", "w") as fp:
         fp.write(html_content)
-    os.makedirs("/Users/alimalik/tinkering/docs", exist_ok=True)
     with open("/Users/alimalik/tinkering/docs/index.html", "w") as fp:
         fp.write(html_content)
     print("Wrote /Users/alimalik/tinkering/index.html and docs/index.html")
