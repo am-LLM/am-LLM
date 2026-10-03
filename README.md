@@ -64,6 +64,11 @@ My background bridges deep technical execution with high-level strategic oversig
   * **Interspecies Mammalian & Rodent Acoustic Communication** ([Engine 70](https://github.com/am-LLM/tinkering/blob/main/frontier_hybrids/engine_70_interspecies_mammalian_rodent_communication.py)): 20–100 kHz USV spectrogram analysis for rodent affective play vs alarm calls and cross-species semantic intent mapping.
 * **📚 [418 Field Investigation Modules](https://github.com/am-LLM/tinkering/tree/main/engineering_continuum)**: Empirical research harnesses covering electromagnetics, advanced robotics, financial risk models, and continuous physical systems.
 
+### 🎓 [`am-LLM/certification_prep`](./certification_prep) — Professional Certification Preparation & Applied Labs
+* **Offensive Security & Cyber Resilience**: Comprehensive frameworks, cheat sheets, and Python verification PoCs for **OSCP**, **OSWE**, **CISSP**, **CEH**, **CHFI**, and **GICSP**.
+* **Enterprise Infrastructure & Governance**: Deep architectural references for **CCNA/CCNP**, **NEBOSH/OSHA** safety modeling, **ISO 22301** BCM, and **PRINCE2** stage-gate EVM.
+* **Financial Engineering & AI Systems**: Parametric risk and valuation solvers for **GARP FRM**, **CFI FMVA**, **Google Cloud GenAI Leader**, **Azure DP-800**, **AWS SAP**, and **DeepLearning.AI**.
+
 ---
 
 ## 🎯 Industry Standards & Methodologies Implemented
