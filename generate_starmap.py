@@ -185,7 +185,6 @@ def generate_html():
             --glow: rgba(0, 240, 255, 0.4);
         }}
 
-        /* Theme Presets */
         body.theme-cyber {{
             --bg-color: #060d1f;
             --bg-grad: radial-gradient(circle at 50% 50%, #0e1e3e 0%, #081126 50%, #030712 100%);
@@ -260,7 +259,6 @@ def generate_html():
             height: 100%;
             z-index: 1;
         }}
-        /* UI Overlay */
         .hud-layer {{
             position: absolute;
             top: 0;
@@ -277,7 +275,6 @@ def generate_html():
         .hud-layer * {{
             pointer-events: auto;
         }}
-        /* Top Navigation Header */
         .header-bar {{
             display: flex;
             justify-content: space-between;
@@ -315,7 +312,6 @@ def generate_html():
             border-radius: 6px;
             font-weight: 700;
         }}
-        /* Search Box */
         .search-container {{
             position: relative;
             flex: 1;
@@ -350,7 +346,6 @@ def generate_html():
             color: var(--primary);
             font-size: 0.9rem;
         }}
-        /* Category Filters */
         .category-filters {{
             display: flex;
             gap: 6px;
@@ -383,7 +378,6 @@ def generate_html():
             border-radius: 50%;
             box-shadow: 0 0 8px currentColor;
         }}
-        /* Action Controls & Theme Picker */
         .controls-group {{
             display: flex;
             align-items: center;
@@ -429,7 +423,6 @@ def generate_html():
             border-color: var(--primary);
             box-shadow: 0 0 12px var(--glow);
         }}
-        /* Side HUD Card / Modal */
         .side-panel {{
             position: absolute;
             right: 20px;
@@ -551,7 +544,6 @@ def generate_html():
             box-shadow: 0 8px 28px var(--glow);
             filter: brightness(1.1);
         }}
-        /* Hover Tooltip */
         #tooltip {{
             position: absolute;
             pointer-events: none;
@@ -580,7 +572,6 @@ def generate_html():
             font-size: 0.92rem;
             color: #ffffff;
         }}
-        /* Footer Bar */
         .footer-bar {{
             display: flex;
             justify-content: space-between;
@@ -605,7 +596,6 @@ def generate_html():
             text-decoration: underline;
             text-shadow: 0 0 8px var(--primary);
         }}
-        /* Search Dropdown */
         .search-results {{
             position: absolute;
             top: 46px;
@@ -647,21 +637,18 @@ def generate_html():
     <canvas id="webgl-canvas"></canvas>
 
     <div class="hud-layer">
-        <!-- Top Navigation -->
         <header class="header-bar">
             <div class="brand-title">
                 <h1>⚡ ALI MALIK</h1>
                 <span class="brand-badge">500+ RESEARCH TOPIC UNIVERSE</span>
             </div>
 
-            <!-- Real-time Search -->
             <div class="search-container">
                 <span class="search-icon">🔍</span>
                 <input type="text" id="search-box" class="search-input" placeholder="Search any topic (e.g. BCI, Jailbreak, Valuation, SCADA)..." autocomplete="off">
                 <div id="search-results" class="search-results"></div>
             </div>
 
-            <!-- Category Filters -->
             <div class="category-filters">
                 <button class="filter-btn active" data-cat="all"><span class="dot" style="background: #ffffff;"></span> All Galaxy</button>
                 <button class="filter-btn" data-cat="Frontier Engines"><span class="dot" style="background: #00f0ff;"></span> 70 Engines</button>
@@ -672,7 +659,6 @@ def generate_html():
                 <button class="filter-btn" data-cat="Continuum Fields"><span class="dot" style="background: #a5b4fc;"></span> 418 Continuum</button>
             </div>
 
-            <!-- Action Controls & Theme Picker -->
             <div class="controls-group">
                 <select id="theme-select" class="theme-selector" title="Select Theme Palette">
                     <option value="theme-cyber">⚡ Cyber Neon</option>
@@ -686,7 +672,6 @@ def generate_html():
             </div>
         </header>
 
-        <!-- Side Detail Panel -->
         <aside id="side-panel" class="side-panel">
             <button id="panel-close-btn" class="panel-close">✕</button>
             <span id="panel-cat" class="panel-cat-badge">Frontier Engine</span>
@@ -700,15 +685,13 @@ def generate_html():
             </a>
         </aside>
 
-        <!-- Hover Tooltip -->
         <div id="tooltip">
             <div id="tooltip-cat" class="t-cat">CATEGORY</div>
             <div id="tooltip-title" class="t-title">Star Title</div>
         </div>
 
-        <!-- Footer Bar -->
         <footer class="footer-bar">
-            <div>🚀 <b>Controls:</b> Left-Click + Drag: Rotate | Scroll: Zoom | Right-Click: Pan | Click Star: Warp & Inspect</div>
+            <div>🚀 <b>Controls:</b> Left-Click + Drag: Rotate | Scroll: Zoom | Right-Click: Pan | Click Star or Planet: Warp & Inspect</div>
             <div class="footer-links">
                 <a href="https://github.com/am-LLM" target="_blank">GitHub Profile</a>
                 <a href="https://github.com/am-LLM/tinkering" target="_blank">Tinkering Master Repo</a>
@@ -716,19 +699,16 @@ def generate_html():
         </footer>
     </div>
 
-    <!-- Three.js and OrbitControls from CDN -->
+    <!-- Three.js, OrbitControls, Tween.js from CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
 
     <script>
-        // Topic Data Catalog
         const TOPICS = {topics_json};
 
-        // Theme Palettes
         const THEMES = {{
             "theme-cyber": {{
-                name: "Cyber Neon",
                 catColors: {{
                     "Frontier Engines": 0x00f0ff,
                     "Business Strategy": 0xffd166,
@@ -745,7 +725,6 @@ def generate_html():
                 fogColor: 0x060d1f
             }},
             "theme-solar": {{
-                name: "Solar Flare",
                 catColors: {{
                     "Frontier Engines": 0xfbbf24,
                     "Business Strategy": 0xf59e0b,
@@ -762,7 +741,6 @@ def generate_html():
                 fogColor: 0x1a0f05
             }},
             "theme-cobalt": {{
-                name: "Deep Cobalt",
                 catColors: {{
                     "Frontier Engines": 0x38bdf8,
                     "Business Strategy": 0x60a5fa,
@@ -779,7 +757,6 @@ def generate_html():
                 fogColor: 0x040e26
             }},
             "theme-matrix": {{
-                name: "Matrix Emerald",
                 catColors: {{
                     "Frontier Engines": 0x00ffaa,
                     "Business Strategy": 0xa3e635,
@@ -796,7 +773,6 @@ def generate_html():
                 fogColor: 0x03140b
             }},
             "theme-slate": {{
-                name: "Crisp Slate",
                 catColors: {{
                     "Frontier Engines": 0xffffff,
                     "Business Strategy": 0xf1f5f9,
@@ -817,14 +793,57 @@ def generate_html():
         let currentThemeKey = localStorage.getItem("starmap_theme") || "theme-cyber";
         let activeTheme = THEMES[currentThemeKey] || THEMES["theme-cyber"];
 
-        const CLUSTER_CENTERS = {{
-            "defense": {{ x: -140, y: 35, z: -80 }},
-            "ai": {{ x: 0, y: 75, z: 0 }},
-            "strategy": {{ x: 135, y: 45, z: 75 }},
-            "bio": {{ x: -75, y: -65, z: 125 }},
-            "quantum": {{ x: 95, y: -55, z: -105 }},
-            "frontier": {{ x: -45, y: 25, z: -125 }},
-            "continuum": {{ x: 0, y: -25, z: 0 }}
+        // Exact Unified Sector Anchors
+        const SECTORS = {{
+            "frontier": {{
+                name: "⚡ 70 FRONTIER ENGINES",
+                pos: {{ x: -130, y: 30, z: -70 }},
+                color: "#00f0ff",
+                hex: 0x00f0ff,
+                cat: "Frontier Engines"
+            }},
+            "strategy": {{
+                name: "📈 BUSINESS & VALUATION",
+                pos: {{ x: 130, y: 35, z: 65 }},
+                color: "#ffd166",
+                hex: 0xffd166,
+                cat: "Business Strategy"
+            }},
+            "ai": {{
+                name: "🤖 AI SWARMS & QA",
+                pos: {{ x: 0, y: 75, z: -10 }},
+                color: "#d946ef",
+                hex: 0xd946ef,
+                cat: "AI & QA"
+            }},
+            "defense": {{
+                name: "🛡️ DEFENSE & AERO",
+                pos: {{ x: -85, y: -45, z: 110 }},
+                color: "#ff3366",
+                hex: 0xff3366,
+                cat: "Defense & Aero"
+            }},
+            "bio": {{
+                name: "🧬 BCI & INTERSPECIES",
+                pos: {{ x: 95, y: -50, z: -85 }},
+                color: "#00ffaa",
+                hex: 0x00ffaa,
+                cat: "Bionics & Bio"
+            }},
+            "quantum": {{
+                name: "⚡ QUANTUM & SCADA",
+                pos: {{ x: -30, y: 25, z: -130 }},
+                color: "#38bdf8",
+                hex: 0x38bdf8,
+                cat: "Quantum & Energy"
+            }},
+            "continuum": {{
+                name: "📚 418 FIELD CONTINUUM",
+                pos: {{ x: 0, y: -25, z: 0 }},
+                color: "#a5b4fc",
+                hex: 0xa5b4fc,
+                cat: "Continuum Fields"
+            }}
         }};
 
         // Web Audio Synthesizer
@@ -853,7 +872,7 @@ def generate_html():
         const scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(activeTheme.fogColor, 0.00025);
 
-        const camera = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 4000);
+        const camera = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 4500);
         camera.position.set(0, 160, 360);
 
         const renderer = new THREE.WebGLRenderer({{ canvas, antialias: true, alpha: true }});
@@ -863,7 +882,7 @@ def generate_html():
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
-        controls.maxDistance = 1100;
+        controls.maxDistance = 1200;
         controls.minDistance = 15;
         controls.autoRotate = true;
         controls.autoRotateSpeed = 0.35;
@@ -880,49 +899,35 @@ def generate_html():
         pointLight2.position.set(120, -60, -100);
         scene.add(pointLight2);
 
-        // Background Starfield
+        // Background Starfield (Static background)
         const starGeo = new THREE.BufferGeometry();
         const starCount = 4000;
         const starPos = new Float32Array(starCount * 3);
         for (let i = 0; i < starCount * 3; i += 3) {{
-            starPos[i] = (Math.random() - 0.5) * 2200;
-            starPos[i+1] = (Math.random() - 0.5) * 2200;
-            starPos[i+2] = (Math.random() - 0.5) * 2200;
+            starPos[i] = (Math.random() - 0.5) * 2500;
+            starPos[i+1] = (Math.random() - 0.5) * 2500;
+            starPos[i+2] = (Math.random() - 0.5) * 2500;
         }}
         starGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
         const starMat = new THREE.PointsMaterial({{ color: 0xe2e8f0, size: 1.8, transparent: true, opacity: 0.75 }});
         const starPoints = new THREE.Points(starGeo, starMat);
         scene.add(starPoints);
 
-        // Glowing Volumetric Nebula Gas Spheres
-        const nebulaGroup = new THREE.Group();
-        const nebulaMeshes = [];
-        for (const [key, center] of Object.entries(CLUSTER_CENTERS)) {{
-            const nebGeo = new THREE.SphereGeometry(45, 16, 16);
-            const nebMat = new THREE.MeshBasicMaterial({{
-                color: activeTheme.lineColor,
-                wireframe: true,
-                transparent: true,
-                opacity: 0.08
-            }});
-            const nebMesh = new THREE.Mesh(nebGeo, nebMat);
-            nebMesh.position.set(center.x, center.y, center.z);
-            nebulaGroup.add(nebMesh);
-            nebulaMeshes.push(nebMesh);
-        }}
-        scene.add(nebulaGroup);
+        // UNIFIED GALAXY ROOT GROUP (Everything stays 100% aligned together)
+        const galaxyGroup = new THREE.Group();
+        scene.add(galaxyGroup);
 
-        // 3D Text Billboards for Sector Labels
+        // 3D Text Billboard Generator
         function createTextSprite(text, colorHex) {{
             const canvas = document.createElement("canvas");
             canvas.width = 512;
             canvas.height = 128;
             const ctx = canvas.getContext("2d");
-            ctx.fillStyle = "rgba(10, 20, 45, 0.8)";
+            ctx.fillStyle = "rgba(8, 16, 38, 0.88)";
             ctx.strokeStyle = colorHex;
             ctx.lineWidth = 4;
             ctx.beginPath();
-            ctx.roundRect(10, 10, 492, 108, 16);
+            ctx.roundRect(8, 8, 496, 112, 18);
             ctx.fill();
             ctx.stroke();
 
@@ -935,35 +940,13 @@ def generate_html():
             ctx.fillText(text, 256, 64);
 
             const texture = new THREE.CanvasTexture(canvas);
-            const mat = new THREE.SpriteMaterial({{ map: texture, transparent: true, opacity: 0.95 }});
+            const mat = new THREE.SpriteMaterial({{ map: texture, transparent: true, opacity: 0.96 }});
             const sprite = new THREE.Sprite(mat);
-            sprite.scale.set(40, 10, 1);
+            sprite.scale.set(42, 10.5, 1);
             return sprite;
         }}
 
-        const sectorLabels = [
-            {{ name: "⚡ 70 FRONTIER ENGINES", pos: CLUSTER_CENTERS["frontier"], col: "#00f0ff" }},
-            {{ name: "📈 BUSINESS & VALUATION", pos: CLUSTER_CENTERS["strategy"], col: "#ffd166" }},
-            {{ name: "🤖 AI SWARMS & QA", pos: CLUSTER_CENTERS["ai"], col: "#d946ef" }},
-            {{ name: "🛡️ DEFENSE & AERO", pos: CLUSTER_CENTERS["defense"], col: "#ff3366" }},
-            {{ name: "🧬 BCI & INTERSPECIES", pos: CLUSTER_CENTERS["bio"], col: "#00ffaa" }},
-            {{ name: "⚡ QUANTUM & SCADA", pos: CLUSTER_CENTERS["quantum"], col: "#38bdf8" }},
-            {{ name: "📚 418 FIELD CONTINUUM", pos: {{ x: 0, y: -75, z: 0 }}, col: "#a5b4fc" }}
-        ];
-
-        sectorLabels.forEach(s => {{
-            const lbl = createTextSprite(s.name, s.col);
-            lbl.position.set(s.pos.x, s.pos.y + 40, s.pos.z);
-            scene.add(lbl);
-        }});
-
-        // Node Mesh Representation
-        const nodeMeshes = [];
-        const nodeDataMap = new Map();
-        const raycaster = new THREE.Raycaster();
-        const mouse = new THREE.Vector2();
-
-        // Glow Sprite Texture Generator
+        // Glowing Star Sprite Texture Generator
         function createGlowSprite(colorHex) {{
             const canvas = document.createElement("canvas");
             canvas.width = 128;
@@ -980,29 +963,94 @@ def generate_html():
             return new THREE.CanvasTexture(canvas);
         }}
 
-        // Layout Nodes into Galaxy
+        // Build Sector Focus Planets & Billboards
+        const sectorPlanetMeshes = [];
+        for (const [key, sector] of Object.entries(SECTORS)) {{
+            const center = sector.pos;
+
+            // 1. Sector Focus Planet Sphere
+            const sphereGeo = new THREE.SphereGeometry(key === "continuum" ? 6 : 4.5, 24, 24);
+            const sphereMat = new THREE.MeshStandardMaterial({{
+                color: sector.hex,
+                emissive: sector.hex,
+                emissiveIntensity: 0.6,
+                roughness: 0.2,
+                metalness: 0.8
+            }});
+            const planetMesh = new THREE.Mesh(sphereGeo, sphereMat);
+            planetMesh.position.set(center.x, center.y, center.z);
+            planetMesh.userData = {{
+                isPlanetFocus: true,
+                name: sector.name,
+                category: sector.cat,
+                cluster: key,
+                desc: `Central gravitational focus for the ${{sector.name}} sector. Orbiting stars represent verified engines and modules.`
+            }};
+            galaxyGroup.add(planetMesh);
+            sectorPlanetMeshes.push(planetMesh);
+
+            // 2. Orbital Rings around Focus Planet
+            const ringGeo = new THREE.RingGeometry(key === "continuum" ? 18 : 10, key === "continuum" ? 19.5 : 11.2, 32);
+            const ringMat = new THREE.MeshBasicMaterial({{
+                color: sector.hex,
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.5
+            }});
+            const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+            ringMesh.position.set(center.x, center.y, center.z);
+            ringMesh.rotation.x = Math.PI / 2.3;
+            galaxyGroup.add(ringMesh);
+
+            // 3. Volumetric Nebula Halo Sphere (Locked in exact sector position)
+            const nebGeo = new THREE.SphereGeometry(key === "continuum" ? 65 : 42, 16, 16);
+            const nebMat = new THREE.MeshBasicMaterial({{
+                color: sector.hex,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.07
+            }});
+            const nebMesh = new THREE.Mesh(nebGeo, nebMat);
+            nebMesh.position.set(center.x, center.y, center.z);
+            galaxyGroup.add(nebMesh);
+
+            // 4. Sector Title Billboard (Hovering precisely 24 units above planet)
+            const billboard = createTextSprite(sector.name, sector.color);
+            billboard.position.set(center.x, center.y + 24, center.z);
+            galaxyGroup.add(billboard);
+        }}
+
+        // Layout Stars Around Their Exact Sector Focus Planet
+        const nodeMeshes = [];
+        const nodeDataMap = new Map();
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
         TOPICS.forEach((item, index) => {{
-            const cluster = CLUSTER_CENTERS[item.cluster] || CLUSTER_CENTERS["continuum"];
+            const sector = SECTORS[item.cluster] || SECTORS["continuum"];
+            const center = sector.pos;
             let pos;
 
             if (item.cluster === "continuum") {{
+                // Orbital accretion disc centered exactly on continuum planet
                 const angle = index * 0.16;
-                const radius = 65 + Math.sqrt(index) * 11.5;
+                const radius = 25 + Math.sqrt(index) * 10.5;
                 pos = new THREE.Vector3(
-                    cluster.x + Math.cos(angle) * radius + (Math.random() - 0.5) * 22,
-                    cluster.y + (Math.random() - 0.5) * 38,
-                    cluster.z + Math.sin(angle) * radius + (Math.random() - 0.5) * 22
+                    center.x + Math.cos(angle) * radius + (Math.random() - 0.5) * 16,
+                    center.y + (Math.random() - 0.5) * 24,
+                    center.z + Math.sin(angle) * radius + (Math.random() - 0.5) * 16
                 );
             }} else {{
+                // Clustered planetary orbit around sector focus
                 const u = Math.random();
                 const v = Math.random();
                 const theta = u * 2.0 * Math.PI;
                 const phi = Math.acos(2.0 * v - 1.0);
-                const r = Math.cbrt(Math.random()) * 52;
+                const r = 10 + Math.cbrt(Math.random()) * 32;
                 pos = new THREE.Vector3(
-                    cluster.x + r * Math.sin(phi) * Math.cos(theta),
-                    cluster.y + r * Math.sin(phi) * Math.sin(theta),
-                    cluster.z + r * Math.cos(phi)
+                    center.x + r * Math.sin(phi) * Math.cos(theta),
+                    center.y + r * Math.sin(phi) * Math.sin(theta),
+                    center.z + r * Math.cos(phi)
                 );
             }}
 
@@ -1015,18 +1063,18 @@ def generate_html():
             }});
 
             const sprite = new THREE.Sprite(spriteMat);
-            const scale = (item.size || 2.0) * 4.8;
+            const scale = (item.size || 2.0) * 4.6;
             sprite.scale.set(scale, scale, 1);
             sprite.position.copy(pos);
             sprite.userData = item;
 
-            scene.add(sprite);
+            galaxyGroup.add(sprite);
             nodeMeshes.push(sprite);
             nodeDataMap.set(item.id, {{ mesh: sprite, data: item }});
         }});
 
-        // Constellation Connecting Lines
-        const lineMat = new THREE.LineBasicMaterial({{ color: activeTheme.lineColor, transparent: true, opacity: 0.3 }});
+        // Constellation Lines (Inside galaxyGroup)
+        const lineMat = new THREE.LineBasicMaterial({{ color: activeTheme.lineColor, transparent: true, opacity: 0.28 }});
         const lineGeo = new THREE.BufferGeometry();
         const linePositions = [];
         for (let i = 0; i < nodeMeshes.length; i += 3) {{
@@ -1034,7 +1082,7 @@ def generate_html():
                 if (nodeMeshes[i].userData.category === nodeMeshes[j].userData.category) {{
                     const p1 = nodeMeshes[i].position;
                     const p2 = nodeMeshes[j].position;
-                    if (p1.distanceTo(p2) < 65) {{
+                    if (p1.distanceTo(p2) < 45) {{
                         linePositions.push(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
                     }}
                 }}
@@ -1042,7 +1090,7 @@ def generate_html():
         }}
         lineGeo.setAttribute("position", new THREE.Float32BufferAttribute(linePositions, 3));
         const linesMesh = new THREE.LineSegments(lineGeo, lineMat);
-        scene.add(linesMesh);
+        galaxyGroup.add(linesMesh);
 
         // Apply Theme Function
         function applyTheme(themeKey) {{
@@ -1059,11 +1107,6 @@ def generate_html():
             pointLight2.color.setHex(theme.pointColor2);
             lineMat.color.setHex(theme.lineColor);
 
-            nebulaMeshes.forEach(m => {{
-                m.material.color.setHex(theme.lineColor);
-            }});
-
-            // Update all node sprite textures
             nodeMeshes.forEach(mesh => {{
                 const colHex = theme.catColors[mesh.userData.category] || 0x00f0ff;
                 mesh.material.map = createGlowSprite("#" + colHex.toString(16).padStart(6, '0'));
@@ -1073,7 +1116,6 @@ def generate_html():
             playChime(750, "triangle");
         }}
 
-        // Theme Dropdown Listener
         const themeSelect = document.getElementById("theme-select");
         themeSelect.value = currentThemeKey;
         themeSelect.addEventListener("change", (e) => {{
@@ -1098,17 +1140,17 @@ def generate_html():
 
         function showPanel(item) {{
             const colHex = "#" + (activeTheme.catColors[item.category] || 0x00f0ff).toString(16).padStart(6, '0');
-            panelCat.textContent = item.category;
+            panelCat.textContent = item.category || "SECTOR FOCUS";
             panelCat.style.color = colHex;
             panelCat.style.borderColor = colHex;
             panelCat.style.background = colHex + "22";
             panelTitle.textContent = item.name;
-            panelFolder.textContent = item.folder;
+            panelFolder.textContent = item.folder || "am-LLM Master Index";
             panelDesc.textContent = item.desc;
-            panelLink.href = item.url;
+            panelLink.href = item.url || "https://github.com/am-LLM/tinkering";
 
             panelTags.innerHTML = "";
-            (item.tags || []).forEach(tag => {{
+            (item.tags || ["Sector Focus", "Domain Cluster"]).forEach(tag => {{
                 const t = document.createElement("span");
                 t.className = "tag-pill";
                 t.textContent = tag;
@@ -1118,10 +1160,11 @@ def generate_html():
             sidePanel.classList.add("open");
         }}
 
-        function flyToNode(mesh, targetDist = 42) {{
+        function flyToNode(mesh, targetDist = 38) {{
             controls.autoRotate = false;
-            const targetPos = mesh.position.clone();
-            const camTargetPos = targetPos.clone().add(new THREE.Vector3(0, 14, targetDist));
+            const targetPos = new THREE.Vector3();
+            mesh.getWorldPosition(targetPos);
+            const camTargetPos = targetPos.clone().add(new THREE.Vector3(0, 12, targetDist));
 
             playChime(660, "triangle");
 
@@ -1138,14 +1181,15 @@ def generate_html():
             showPanel(mesh.userData);
         }}
 
-        // Window Resize
         window.addEventListener("resize", () => {{
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         }});
 
-        // Mouse Move for Hover Tooltip
+        // Raycasting for both Stars and Focus Planets
+        const interactiveObjects = [...nodeMeshes, ...sectorPlanetMeshes];
+
         window.addEventListener("mousemove", (e) => {{
             mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
             mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -1154,14 +1198,14 @@ def generate_html():
             tooltip.style.top = e.clientY + "px";
 
             raycaster.setFromCamera(mouse, camera);
-            const intersects = raycaster.intersectObjects(nodeMeshes);
+            const intersects = raycaster.intersectObjects(interactiveObjects);
 
             if (intersects.length > 0) {{
                 const hit = intersects[0].object;
                 if (hoveredNode !== hit) {{
                     hoveredNode = hit;
                     const colHex = "#" + (activeTheme.catColors[hit.userData.category] || 0x00f0ff).toString(16).padStart(6, '0');
-                    tooltipCat.textContent = hit.userData.category;
+                    tooltipCat.textContent = hit.userData.category || "SECTOR FOCUS";
                     tooltipCat.style.color = colHex;
                     tooltipTitle.textContent = hit.userData.name;
                     tooltip.style.borderColor = colHex;
@@ -1176,24 +1220,21 @@ def generate_html():
             }}
         }});
 
-        // Click to Warp & Select
         window.addEventListener("click", (e) => {{
             if (e.target.closest(".hud-layer") && !e.target.closest("#webgl-canvas")) return;
             raycaster.setFromCamera(mouse, camera);
-            const intersects = raycaster.intersectObjects(nodeMeshes);
+            const intersects = raycaster.intersectObjects(interactiveObjects);
             if (intersects.length > 0) {{
                 const target = intersects[0].object;
                 flyToNode(target);
             }}
         }});
 
-        // Close Panel
         document.getElementById("panel-close-btn").addEventListener("click", () => {{
             sidePanel.classList.remove("open");
             controls.autoRotate = true;
         }});
 
-        // Reset Camera
         document.getElementById("reset-cam-btn").addEventListener("click", () => {{
             sidePanel.classList.remove("open");
             controls.autoRotate = true;
@@ -1201,14 +1242,12 @@ def generate_html():
             new TWEEN.Tween(controls.target).to({{ x: 0, y: 0, z: 0 }}, 1000).easing(TWEEN.Easing.Cubic.Out).start();
         }});
 
-        // Audio Toggle
         const audioBtn = document.getElementById("audio-toggle-btn");
         audioBtn.addEventListener("click", () => {{
             soundEnabled = !soundEnabled;
             audioBtn.textContent = soundEnabled ? "🔊 Sound" : "🔇 Muted";
         }});
 
-        // Category Filter Buttons
         document.querySelectorAll(".filter-btn").forEach(btn => {{
             btn.addEventListener("click", () => {{
                 document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
@@ -1226,7 +1265,6 @@ def generate_html():
             }});
         }});
 
-        // Search Autocomplete & Warp
         searchBox.addEventListener("input", (e) => {{
             const q = e.target.value.toLowerCase().trim();
             if (!q) {{
@@ -1263,20 +1301,19 @@ def generate_html():
             searchResults.style.display = "block";
         }});
 
-        // Hide search on outside click
         window.addEventListener("click", (e) => {{
             if (!e.target.closest(".search-container")) {{
                 searchResults.style.display = "none";
             }}
         }});
 
-        // Animation Loop
+        // Animation Loop (Unified lockstep rotation)
         function animate(time) {{
             requestAnimationFrame(animate);
             TWEEN.update();
             controls.update();
-            starPoints.rotation.y += 0.0002;
-            nebulaGroup.rotation.y += 0.0003;
+            // Subtle unified galaxy drift
+            galaxyGroup.rotation.y += 0.0002;
             renderer.render(scene, camera);
         }}
         requestAnimationFrame(animate);
