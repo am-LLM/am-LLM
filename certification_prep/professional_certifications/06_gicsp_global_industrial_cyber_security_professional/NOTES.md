@@ -1,20 +1,42 @@
-# GICSP ICS/SCADA Security Architecture & Industrial Protocols
-**Author**: Ali Malik (`@am-LLM`)  
-**Scope**: GIAC GICSP, Purdue Model (ISA-95/IEC 62443), Modbus TCP, DNP3, and Safety Instrumented Systems (SIS).
+# Global Industrial Cyber Security Professional (GICSP) — ICS/SCADA Security
+
+## 1. Purdue Model for Industrial Control Systems (ISA-95)
+
+```
+                            PURDUE MODEL HIERARCHY
+ ┌────────────────────────────────────────────────────────────────────────┐
+ │ Level 5: Enterprise Network (Corporate ERP, Billing, Internet Access)   │
+ ├────────────────────────────────────────────────────────────────────────┤
+ │ Level 4: Site Business Operations (Logistics, MES, Plant Management)   │
+ ├────────────────────────────────────────────────────────────────────────┤
+ │ === INDUSTRIAL DEMILITARIZED ZONE (IDMZ / Layer 3.5: Historians/Jump) ==│
+ ├────────────────────────────────────────────────────────────────────────┤
+ │ Level 3: Site Operations & Supervisory Control (SCADA HMI, Eng Station)│
+ ├────────────────────────────────────────────────────────────────────────┤
+ │ Level 2: Area Supervisory Control (Local HMIs, Operator Consoles)      │
+ ├────────────────────────────────────────────────────────────────────────┤
+ │ Level 1: Basic Process Control (PLCs, RTUs, DCS Controllers, IEDs)     │
+ ├────────────────────────────────────────────────────────────────────────┤
+ │ Level 0: Physical Process (Sensors, Actuators, Valves, Pumps, Motors)  │
+ └────────────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
-## 1. The Purdue Enterprise Reference Architecture (ISA-95)
+## 2. Industrial Protocols & Deep Packet Inspection (DPI)
 
-* **Level 0 (Physical Process)**: Sensors, actuators, pumps, transformers.
-* **Level 1 (Direct Control)**: PLCs, RTUs, IEDs, drive controllers.
-* **Level 2 (Plant Supervisory Control)**: HMI, Engineering Workstations, SCADA software.
-* **Level 3 (Manufacturing Operations)**: Historians, domain controllers, patch management.
-* **Industrial DMZ (IDMZ - Level 3.5)**: Jumphosts, data diodes, dual-homed historians separating IT and OT.
-* **Level 4/5 (Enterprise IT)**: ERP, Corporate LAN, Internet access.
+### Modbus TCP Architecture
+* Modbus TCP operates on port **502**.
+* Structure: `MBAP Header (7 bytes) + PDU (Function Code + Data)`.
 
----
+| Function Code | Name | Operation Type | Risk Level |
+|---|---|---|---|
+| `0x01` / `0x02` | Read Coils / Discrete Inputs | Read Binary Status | Low |
+| `0x03` / `0x04` | Read Holding / Input Registers | Read Analog Values | Low |
+| `0x05` / `0x06` | Write Single Coil / Register | Modify Single Physical State | **HIGH** |
+| `0x0F` / `0x10` | Write Multiple Coils / Registers | Bulk Process State Override | **CRITICAL** |
 
-## 2. Modbus TCP Protocol Security Anomalies
-
-Modbus TCP (Port 502) has no built-in encryption or authentication. Critical attacks include unauthorized Function Code `0x05` (Write Single Coil) or `0x10` (Write Multiple Registers).
+### ICS DPI Firewall Rule Requirements:
+1. Block all write commands (`FC >= 0x05`) from non-Engineering Workstations.
+2. Restrict coil write address ranges to prevent safety valve overrides.
+3. Enforce strict Layer 3.5 IDMZ isolation with zero direct Level 4 to Level 2/1 routing.

@@ -1,12 +1,24 @@
-# ISO 22301 Business Continuity & Crisis Management Architecture
-**Author**: Ali Malik (`@am-LLM`)  
-**Scope**: ISO 22301:2019 Standard, Business Impact Analysis (BIA), Maximum Tolerable Period of Disruption (MTPD), RTO/RPO.
+# ISO 22301:2019 Business Continuity Management Systems (BCMS)
 
----
+## 1. Business Impact Analysis (BIA) Lifecycle & Core Metrics
 
-## 1. Core Continuity Parameters
+```
+                     DISRUPTION TIMELINE & RECOVERY TARGETS
+ Normal State      Disruption Occurs                Disaster Declared       RTO Reached
+ ────┬─────────────────────X────────────────────────────────┼────────────────────┬────► Time
+     │                     │                                │                    │
+     │<── RPO (Data Loss) ─┤                                │                    │
+     │    (Backup Window)  │                                │<── RTO (Downtime) ─┤
+     │                     │                                                     │
+     │                     │<───────────── Maximum Tolerable Downtime (MTD) ─────┤
+```
 
-* **Maximum Tolerable Period of Disruption (MTPD)**: The maximum time an organization can endure disruption before survival is threatened.
-* **Recovery Time Objective (RTO)**: Target time for resuming disrupted activities ($RTO < MTPD$).
-* **Recovery Point Objective (RPO)**: Maximum acceptable data loss period ($RPO \le 	ext{Data Backup Interval}$).
-* **Minimum Business Continuity Objective (MBCO)**: The minimum service level acceptable to meet corporate obligations.
+### Critical Parameter Definitions:
+1. **Maximum Tolerable Period of Disruption ($MTPD$ / $MTD$)**:
+   The maximum time a business process can remain disrupted before irreversible existential damage occurs.
+2. **Recovery Time Objective ($RTO$)**:
+   Target time to restore disrupted activities and services ($RTO \le MTPD$).
+3. **Recovery Point Objective ($RPO$)**:
+   The maximum allowable data loss period expressed in units of time ($RPO \le \text{Data Backup Interval}$).
+4. **Minimum Business Continuity Objective ($MBCO$)**:
+   The minimum level of services or products that is acceptable to the organization to achieve its business objectives during a disruption.

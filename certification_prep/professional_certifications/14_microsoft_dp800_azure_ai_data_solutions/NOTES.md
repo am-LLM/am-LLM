@@ -1,11 +1,20 @@
-# Microsoft DP-800 Azure Data & AI Architecture Notes
-**Author**: Ali Malik (`@am-LLM`)  
-**Scope**: Microsoft Fabric, Azure Synapse Analytics, Delta Lake Lakehouse, and Azure OpenAI Service Integration.
+# Microsoft DP-800: Azure AI & Enterprise Data Engineering Solutions
+
+## 1. Microsoft Fabric & Delta Lake Medallion Architecture
+
+```
+                 MEDALLION DATA LAKEHOUSE PATTERN (FABRIC ONELAKE)
+ ┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐
+ │ Bronze (Raw)    │ ───> │ Silver (Clean)  │ ───> │ Gold (Curated)  │
+ │ Append-only raw │      │ Deduplicated &  │      │ Aggregated star │
+ │ ingestion lake  │      │ Schema-enforced │      │ schema business │
+ └─────────────────┘      └─────────────────┘      └─────────────────┘
+```
 
 ---
 
-## 1. Delta Lake Medallion Architecture
-
-* **Bronze (Raw Ingestion)**: Append-only raw streaming ingestion from Event Hubs / IoT Hub.
-* **Silver (Cleaned & Enriched)**: Schema enforcement, deduping, and typed transformations.
-* **Gold (Business Aggregates)**: Dimensional star-schema models for Power BI and ML models.
+## 2. Core Azure Data Engineering Components
+* **Microsoft Fabric OneLake**: Single unified logical SaaS data lake over Azure Blob/ADLS Gen2 eliminating data siloing.
+* **Delta Lake ACID Guarantees**: Parquet file storage backed by `_delta_log` JSON transaction logs ensuring Serializable / WriteSerializable isolation.
+* **Azure Cosmos DB Vector Search**: Integrated DiskANN and HNSW vector indexing for real-time semantic retrieval alongside operational transactional workloads.
+* **Azure Synapse Serverless SQL**: Query data directly in OneLake parquet format using standard T-SQL with zero dedicated compute clusters.
