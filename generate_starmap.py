@@ -6,20 +6,20 @@ import re
 def build_catalog():
     topics = []
 
-    # 1. AEGIS Flagship
+    # 1. AEGIS Flagship (AEGIS-AERO)
     topics.append({
         "id": "aegis_drone_defense",
         "name": "AEGIS Multi-Medium Drone Defense System",
-        "category": "Defense & Aero",
+        "category": "Defense & C-UAS",
         "folder": "tinkering/frontier_hybrids",
         "url": "https://github.com/am-LLM/tinkering/blob/main/frontier_hybrids/aegis_drone_defense_system.py",
         "desc": "Cost-asymmetric kinetic C-UAS/C-USV interceptor solving the $15k vs $2M missile dilemma with passive acoustic TDoA triangulation and 15-state ES-EKF optical flow.",
         "tags": ["C-UAS", "TDoA", "True Proportional Nav", "Defense", "EKF"],
-        "size": 3.8,
-        "cluster": "defense"
+        "size": 4.0,
+        "cluster": "aegis_aero"
     })
 
-    # 2. Frontier Engines (1-70)
+    # 2. Frontier Engines (1-70) mapped to specific constellations
     engine_files = sorted(glob.glob("/Users/alimalik/tinkering/frontier_hybrids/engine_*.py"))
     for f in engine_files:
         name = os.path.basename(f).replace(".py", "")
@@ -36,23 +36,41 @@ def build_catalog():
                     desc = " ".join(lines[1:3])[:190]
         
         lname = name.lower()
-        if any(w in lname for w in ["ai", "thought", "cognitron", "guardrail", "jailbreak", "snn", "compiler", "pruning", "llm"]):
-            cluster = "ai"
-            cat = "AI & QA"
+        # Constellation Classification Rules
+        if any(w in lname for w in ["guardrail", "jailbreak", "thought", "cognitron", "llm_poison"]):
+            if "poison" in lname or "scada" in lname:
+                cluster = "cyber"
+                cat = "Cyber & Post-Quantum"
+            else:
+                cluster = "cognitive_ai"
+                cat = "Cognitive AI & SLMs"
         elif any(w in lname for w in ["bci", "rodent", "interspecies", "organ", "tcell", "dna", "crispr", "myoglobin", "pain", "sepsis", "calcium", "bionic", "tissue", "optogenetic"]):
-            cluster = "bio"
-            cat = "Bionics & Bio"
-        elif any(w in lname for w in ["quantum", "cryocooler", "perovskite", "superconducting", "mram", "fluxon", "seebeck", "laser", "das"]):
-            cluster = "quantum"
+            if "crispr" in lname:
+                cluster = "veritas_qa"
+                cat = "Formal QA & Compilers"
+            else:
+                cluster = "neuro_bio"
+                cat = "BCI & Interspecies Bio"
+        elif any(w in lname for w in ["scada", "crypto", "braid", "zk", "pqzk"]):
+            cluster = "cyber"
+            cat = "Cyber & Post-Quantum"
+        elif any(w in lname for w in ["jump_diffusion", "circuit_breaker", "cbf", "frechet", "evt"]):
+            cluster = "forecasting"
+            cat = "Forecasting & Risk"
+        elif any(w in lname for w in ["pruning", "compiler", "crystallizer", "causal"]):
+            cluster = "veritas_qa"
+            cat = "Formal QA & Compilers"
+        elif any(w in lname for w in ["quantum", "cryocooler", "perovskite", "superconducting", "mram", "fluxon", "seebeck", "laser", "das", "power", "microgrid"]):
+            cluster = "quantum_energy"
             cat = "Quantum & Energy"
-        elif any(w in lname for w in ["scada", "radar", "sonar", "hypersonic", "plasma", "sail", "debris", "damper", "thruster", "ew", "traffic"]):
-            cluster = "defense"
-            cat = "Defense & Aero"
+        elif any(w in lname for w in ["drone", "hypersonic", "plasma", "sail", "radar", "sonar", "debris", "damper", "thruster", "ew", "traffic"]):
+            cluster = "aegis_aero"
+            cat = "Defense & C-UAS"
         else:
-            cluster = "frontier"
-            cat = "Frontier Engines"
+            cluster = "quantum_energy"
+            cat = "Quantum & Energy"
 
-        is_flagship = any(k in name for k in ["68", "69", "70", "67", "66", "51", "04", "01"])
+        is_flagship = any(k in name for k in ["68", "69", "70", "67", "66", "55", "51", "04", "02", "01"])
         topics.append({
             "id": name,
             "name": clean_name,
@@ -60,23 +78,23 @@ def build_catalog():
             "folder": "tinkering/frontier_hybrids",
             "url": f"https://github.com/am-LLM/tinkering/blob/main/frontier_hybrids/{name}.py",
             "desc": desc,
-            "tags": ["Frontier Engine", "Math Solver", "Python 3.14"],
-            "size": 3.0 if is_flagship else 2.2,
+            "tags": ["Frontier Engine", cat, "Python 3.14"],
+            "size": 3.2 if is_flagship else 2.2,
             "cluster": cluster
         })
 
     # 3. Domain Laboratories
     domain_labs = [
-        ("Aerospace GNC & Flight Dynamics", "aerospace_gnc", "15-state ES-EKF, ULA MVDR beamforming, Space Shuttle TMR FDIR, and Z3 formal proofs.", "Defense & Aero", "defense"),
-        ("Acoustic & Seismic Metamaterials", "acoustic_seismic_metamaterials", "Westervelt non-linear acoustic fields and lithospheric rate-state friction.", "Frontier Engines", "frontier"),
-        ("Advanced Quantum SCADA", "advanced_quantum_scada", "Tokamak MHD equilibrium, QKD satellite links, and Modbus/DNP3 DPI firewalls.", "Quantum & Energy", "quantum"),
-        ("Cyber Forensic & Post-Quantum Crypto", "cyber_forensic_crypto", "Hardened RISC-V gate model, tamper-evident Merkle blackbox, and BFT consensus.", "AI & QA", "ai"),
-        ("Frugal Mechanics & Thermal Dynamics", "frugal_mechanics", "1D MOC water-hammer acoustic solver, Seebeck MPPT, and 2-RC ECM battery models.", "Quantum & Energy", "quantum"),
-        ("GeoSeismic InSAR Vision & Navigation", "geoseismic_insar_vision", "Satellite SAR interferometry, phase unwrapping, and subterranean fault mapping.", "Defense & Aero", "defense"),
-        ("Isomorphic Physics & Side-Channel Bridge", "isomorphic_hybrid", "Bidirectional state-space physics bridge and silicon DPA/CPA side-channel guards.", "Frontier Engines", "frontier"),
-        ("NLP OSINT Knowledge DAG Engine", "nlp_osint_knowledge_dag", "Automated threat intelligence extraction, entity linking, and causal DAG reasoning.", "AI & QA", "ai"),
-        ("Pediatric Cognitive Systems", "pediatric_cognitive_systems", "Developmental neural networks, active inference child-cognition models.", "Bionics & Bio", "bio"),
-        ("Frontier Quant Hybrids & High-Speed Finance", "frontier_quant_hybrids", "Zero-allocation C limit order book, jump-diffusion volatility, and microstructure models.", "Business Strategy", "strategy"),
+        ("Aerospace GNC & Flight Dynamics", "aerospace_gnc", "15-state ES-EKF, ULA MVDR beamforming, Space Shuttle TMR FDIR, and Z3 formal proofs.", "Defense & C-UAS", "aegis_aero"),
+        ("Acoustic & Seismic Metamaterials", "acoustic_seismic_metamaterials", "Westervelt non-linear acoustic fields and lithospheric rate-state friction.", "Quantum & Energy", "quantum_energy"),
+        ("Advanced Quantum SCADA Tokamak", "advanced_quantum_scada", "Tokamak MHD equilibrium, QKD satellite links, and Modbus/DNP3 DPI firewalls.", "Cyber & Post-Quantum", "cyber"),
+        ("Cyber Forensic & Post-Quantum Crypto", "cyber_forensic_crypto", "Hardened RISC-V gate model, tamper-evident Merkle blackbox, and BFT consensus.", "Cyber & Post-Quantum", "cyber"),
+        ("Frugal Mechanics & Thermal Dynamics", "frugal_mechanics", "1D MOC water-hammer acoustic solver, Seebeck MPPT, and 2-RC ECM battery models.", "Quantum & Energy", "quantum_energy"),
+        ("GeoSeismic InSAR Vision & Earthquake Forecasting", "geoseismic_insar_vision", "Satellite SAR interferometry, phase unwrapping, and subterranean fault mapping for seismic forecasting.", "Forecasting & Risk", "forecasting"),
+        ("Isomorphic Physics & Side-Channel Guard", "isomorphic_hybrid", "Bidirectional state-space physics bridge and silicon DPA/CPA side-channel guards.", "Formal QA & Compilers", "veritas_qa"),
+        ("NLP OSINT Knowledge DAG Engine", "nlp_osint_knowledge_dag", "Automated threat intelligence extraction, entity linking, and causal DAG reasoning.", "Sales, Marketing & Strategy", "sales_growth"),
+        ("Pediatric Cognitive Systems", "pediatric_cognitive_systems", "Developmental neural networks, active inference child-cognition models.", "BCI & Interspecies Bio", "neuro_bio"),
+        ("Frontier Quant Limit Order Book & High-Speed Finance", "frontier_quant_hybrids", "Zero-allocation C limit order book, jump-diffusion volatility, and microstructure risk models.", "Forecasting & Risk", "forecasting"),
     ]
     for title, folder, desc, cat, cluster in domain_labs:
         topics.append({
@@ -86,57 +104,95 @@ def build_catalog():
             "folder": f"tinkering/domain_laboratories/{folder}",
             "url": f"https://github.com/am-LLM/tinkering/tree/main/domain_laboratories/{folder}",
             "desc": desc,
-            "tags": ["Domain Lab", "Empirical Testbed"],
-            "size": 3.2,
+            "tags": ["Domain Lab", cat, "Empirical Testbed"],
+            "size": 3.4,
             "cluster": cluster
         })
 
-    # 4. Enterprise Business Strategy & Market Analysis
-    strategy_topics = [
-        ("Quantitative Valuation & DCF Financial Modeling", "DCF valuation, sensitivity matrices, unit economics (LTV/CAC), and capital allocation frameworks.", ["Valuation", "DCF", "LTV/CAC", "Financial Modeling"]),
-        ("Go-To-Market (GTM) Strategy & TAM Sizing", "Asymmetric market entry frameworks, bottom-up TAM/SAM/SOM market sizing, and pricing strategies.", ["GTM", "Market Sizing", "TAM/SAM", "Pricing"]),
-        ("Product-Led Growth (PLG) & Viral Dynamics", "Behavioral viral loops, K-factor optimization, activation funnel engineering, and organic product adoption.", ["PLG", "Viral Loops", "Growth", "Retention"]),
-        ("Enterprise Risk, QHSE & ISO 22301 BCM", "Business Continuity Management, NIST SP 800-30 threat modeling, and crisis continuity architecture.", ["BCM", "ISO 22301", "NIST SP 800-30", "Risk"]),
+    # 4. Sales, Marketing, Growth & Enterprise Business (GROWTH-CORE)
+    sales_growth_topics = [
+        ("Asymmetric Go-To-Market (GTM) Strategy & TAM Sizing", "Asymmetric market entry frameworks, bottom-up TAM/SAM/SOM market sizing, and pricing strategies.", ["GTM", "Market Sizing", "TAM/SAM", "Pricing"]),
+        ("Product-Led Growth (PLG) & Behavioral Viral Loops", "Viral K-factor optimization, activation funnel engineering, and organic product adoption mechanics.", ["PLG", "Viral Loops", "Growth", "Retention"]),
+        ("Customer Acquisition Unit Economics (LTV/CAC)", "LTV/CAC payback curves, gross margin optimization, cohort retention, and burn-multiple analysis.", ["LTV/CAC", "Unit Economics", "Payback Curves", "Finance"]),
         ("Competitive Intelligence & Supply-Chain OSINT", "Systematic open-source market intelligence, competitor vulnerability auditing, and supply-chain mapping.", ["OSINT", "Competitive Intel", "Supply Chain"]),
         ("Venture Capital Term Sheets & Governance", "Cap table modeling, liquidation preference analysis, vesting frameworks, and board governance.", ["Venture Capital", "Term Sheets", "Governance"]),
-        ("Gray-Zone Escalation & Economic Game Theory", "Multi-agent non-cooperative game theory, economic warfare resilience, and geopolitical risk mitigation.", ["Game Theory", "Geopolitics", "Economic Defense"]),
+        ("Enterprise Risk, QHSE & ISO 22301 BCM", "Business Continuity Management, NIST SP 800-30 threat modeling, and crisis continuity architecture.", ["BCM", "ISO 22301", "NIST SP 800-30", "Risk"]),
     ]
-    for i, (title, desc, tags) in enumerate(strategy_topics):
+    for i, (title, desc, tags) in enumerate(sales_growth_topics):
         topics.append({
-            "id": f"strategy_{i+1}",
+            "id": f"growth_{i+1}",
             "name": title,
-            "category": "Business Strategy",
-            "folder": "am-LLM/strategy",
+            "category": "Sales, Marketing & Strategy",
+            "folder": "am-LLM/business_growth",
             "url": "https://github.com/am-LLM/am-LLM#1--business-strategy-market-analysis--growth",
             "desc": desc,
             "tags": tags,
-            "size": 3.4,
-            "cluster": "strategy"
+            "size": 3.5,
+            "cluster": "sales_growth"
         })
 
-    # 5. AI Management & Quality Assurance
-    ai_qa_topics = [
-        ("Hierarchical Multi-Agent Swarms", "Coordinator-Lead-Specialist autonomous agent architectures with strict contracts and reactive wakeups.", ["Multi-Agent", "Swarms", "Agentic AI", "Orchestration"]),
-        ("Formal Verification & SMT (Z3) Safety Gates", "Mathematical proof of boundary invariants, zero hallucination constraints, and state-space safety.", ["Z3 Solver", "SMT", "Formal Verification", "Safety"]),
-        ("AI Model Evals & Latency-Budget Profiling", "Automated evaluation benchmarks, test-time compute search (MCTS), and token-per-dollar optimization.", ["Model Evals", "MCTS", "Benchmarking", "Latency"]),
-        ("Representation Engineering (RepE) Latent Steering", "Real-time subspace projection and activation clamping to neutralize adversarial attacks in latent space.", ["RepE", "Latent Steering", "Mechanistic Interpretability"]),
-        ("Zero-Trust Automated Test Harnesses", "100% pass-rate regression testbenches, property-based fuzzing, and mutation testing suites.", ["QA", "Property Testing", "CI/CD", "Regression"]),
-        ("Synthetic Dataset Generation & Curriculum AI", "Automated generation of dense technical bootcamps, code synthesis benchmarks, and verified training corpora.", ["Synthetic Data", "Curriculum", "Fine-Tuning"]),
+    # 5. Forecasting, Prediction & Quantitative Risk (ORACLE-NEXUS)
+    forecasting_topics = [
+        ("Quantitative DCF & Multi-Scenario Sensitivity Forecasting", "Discounted cash-flow forecasting, multi-variable Monte Carlo sensitivity matrices, and capital allocation.", ["DCF", "Sensitivity Modeling", "Forecasting", "Monte Carlo"]),
+        ("Stochastic Jump-Diffusion & Volatility Prediction", "Merton jump-diffusion process, non-linear volatility smile estimation, and extreme regime-shift prediction.", ["Jump Diffusion", "Stochastic Calculus", "Volatility", "Prediction"]),
+        ("Extreme Value Theory (EVT) & Fréchet Tail Forecasting", "Heavy-tailed risk modeling, generalized extreme value distributions, and black-swan tail-risk prediction.", ["EVT", "Frechet Bounds", "Tail Risk", "Time Series"]),
+        ("Continuous Neural ODEs & Dynamic State Predictors", "Continuous-time normalizing flows and neural ordinary differential equations for irregular time-series forecasting.", ["Neural ODE", "Continuous Normalizing Flows", "Deep Learning", "Prediction"]),
+        ("Multi-Agent Non-Cooperative Game Theory & Conflict Forecasting", "Game-theoretic payoff matrices, gray-zone escalation forecasting, and geopolitical risk mitigation.", ["Game Theory", "Geopolitics", "Conflict Forecasting"]),
     ]
-    for i, (title, desc, tags) in enumerate(ai_qa_topics):
+    for i, (title, desc, tags) in enumerate(forecasting_topics):
         topics.append({
-            "id": f"ai_qa_{i+1}",
+            "id": f"forecast_{i+1}",
             "name": title,
-            "category": "AI & QA",
-            "folder": "am-LLM/ai_and_qa",
+            "category": "Forecasting & Risk",
+            "folder": "am-LLM/forecasting_and_risk",
+            "url": "https://github.com/am-LLM/am-LLM#1--business-strategy-market-analysis--growth",
+            "desc": desc,
+            "tags": tags,
+            "size": 3.5,
+            "cluster": "forecasting"
+        })
+
+    # 6. Cognitive AI, SLMs & Guardrails (COGNITIVE-SYNTH)
+    cognitive_ai_topics = [
+        ("COGNITRON-1.58b Ternary SLM Architecture", "BitNet 1.58-bit ternary integer adds, MCTS test-time compute scaling, and active inference reasoning.", ["BitNet", "SLMs", "Active Inference", "Test-Time Compute"]),
+        ("Representation Engineering (RepE) Task Jailbreak Defense", "Real-time subspace projection and activation clamping to neutralize adversarial attacks in latent space.", ["RepE", "Latent Steering", "Mechanistic Interpretability", "Guardrails"]),
+        ("Sparse Autoencoders (SAE) Mechanistic Firewalls", "Overcomplete top-K dictionary decomposition for detecting and clamping malicious activation features.", ["SAE", "Mechanistic Interpretability", "Safety"]),
+        ("Hierarchical Autonomous Multi-Agent Swarms", "Coordinator-Lead-Specialist autonomous agent topologies with formal contracts and reactive event loops.", ["Multi-Agent", "Swarms", "Agentic AI", "Orchestration"]),
+        ("AI Model Evaluations & Latency-Budget Profiling", "Automated evaluation benchmarks, process reward models (PRM), and token-per-dollar optimization.", ["Model Evals", "Benchmarking", "Latency Optimization"]),
+    ]
+    for i, (title, desc, tags) in enumerate(cognitive_ai_topics):
+        topics.append({
+            "id": f"ai_synth_{i+1}",
+            "name": title,
+            "category": "Cognitive AI & SLMs",
+            "folder": "am-LLM/cognitive_ai",
             "url": "https://github.com/am-LLM/am-LLM#2--ai-project-management--applied-engineering-leadership",
             "desc": desc,
             "tags": tags,
-            "size": 3.4,
-            "cluster": "ai"
+            "size": 3.5,
+            "cluster": "cognitive_ai"
         })
 
-    # 6. Continuum Fields
+    # 7. Zero-Trust QA & Formal Verification (VERITAS-QA)
+    veritas_qa_topics = [
+        ("Formal SMT (Z3) Mathematical Invariant Proofs", "Mathematical proof of state-space boundary invariants, safety barriers, and zero hallucination constraints.", ["Z3 Solver", "SMT", "Formal Verification", "Safety"]),
+        ("100% Empirical Pass-Rate Automated Test Harnesses", "End-to-end automated test runner (verify_all.py) ensuring 100% test pass rate across 70 engines and laboratories.", ["QA", "Empirical Testing", "verify_all.py", "CI/CD"]),
+        ("Property-Based Adversarial Fuzzing & Mutation Testing", "Hypothesis-based randomized stress testing, heavy-tailed boundary assertions, and code mutation scoring.", ["Property Testing", "Fuzzing", "Mutation Testing"]),
+    ]
+    for i, (title, desc, tags) in enumerate(veritas_qa_topics):
+        topics.append({
+            "id": f"qa_{i+1}",
+            "name": title,
+            "category": "Formal QA & Compilers",
+            "folder": "am-LLM/quality_assurance",
+            "url": "https://github.com/am-LLM/am-LLM#3--quality-assurance-qa-verification--reliability-engineering",
+            "desc": desc,
+            "tags": tags,
+            "size": 3.5,
+            "cluster": "veritas_qa"
+        })
+
+    # 8. Continuum Fields (418 Modules)
     continuum_fields = sorted(glob.glob("/Users/alimalik/tinkering/engineering_continuum/field_*"))
     for f in continuum_fields:
         name = os.path.basename(f)
@@ -172,7 +228,6 @@ def generate_html():
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {{
-            /* Default Cyber Neon Theme */
             --bg-color: #060d1f;
             --bg-grad: radial-gradient(circle at 50% 50%, #0d1b38 0%, #081126 50%, #030712 100%);
             --panel: rgba(13, 23, 48, 0.94);
@@ -355,15 +410,15 @@ def generate_html():
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.12);
             color: var(--text-secondary);
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             font-weight: 700;
-            padding: 6px 12px;
+            padding: 6px 11px;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }}
         .filter-btn:hover, .filter-btn.active {{
             background: rgba(255, 255, 255, 0.18);
@@ -645,18 +700,21 @@ def generate_html():
 
             <div class="search-container">
                 <span class="search-icon">🔍</span>
-                <input type="text" id="search-box" class="search-input" placeholder="Search any topic (e.g. BCI, Jailbreak, Valuation, SCADA)..." autocomplete="off">
+                <input type="text" id="search-box" class="search-input" placeholder="Search any topic (e.g. Cyber, GTM, Forecasting, BCI)..." autocomplete="off">
                 <div id="search-results" class="search-results"></div>
             </div>
 
             <div class="category-filters">
                 <button class="filter-btn active" data-cat="all"><span class="dot" style="background: #ffffff;"></span> All Galaxy</button>
-                <button class="filter-btn" data-cat="Frontier Engines"><span class="dot" style="background: #00f0ff;"></span> 70 Engines</button>
-                <button class="filter-btn" data-cat="Business Strategy"><span class="dot" style="background: #ffd166;"></span> Strategy & Valuation</button>
-                <button class="filter-btn" data-cat="AI & QA"><span class="dot" style="background: #d946ef;"></span> AI & QA Testing</button>
-                <button class="filter-btn" data-cat="Defense & Aero"><span class="dot" style="background: #ff3366;"></span> Defense & Aero</button>
-                <button class="filter-btn" data-cat="Bionics & Bio"><span class="dot" style="background: #00ffaa;"></span> BCI & Bio</button>
-                <button class="filter-btn" data-cat="Continuum Fields"><span class="dot" style="background: #a5b4fc;"></span> 418 Continuum</button>
+                <button class="filter-btn" data-cat="Cyber & Post-Quantum"><span class="dot" style="background: #a855f7;"></span> Cyber</button>
+                <button class="filter-btn" data-cat="Sales, Marketing & Strategy"><span class="dot" style="background: #f59e0b;"></span> Sales & Marketing</button>
+                <button class="filter-btn" data-cat="Forecasting & Risk"><span class="dot" style="background: #facc15;"></span> Forecasting</button>
+                <button class="filter-btn" data-cat="Cognitive AI & SLMs"><span class="dot" style="background: #e879f9;"></span> Cognitive AI</button>
+                <button class="filter-btn" data-cat="Defense & C-UAS"><span class="dot" style="background: #ff3366;"></span> Defense & C-UAS</button>
+                <button class="filter-btn" data-cat="BCI & Interspecies Bio"><span class="dot" style="background: #00ffaa;"></span> BCI & Bio</button>
+                <button class="filter-btn" data-cat="Formal QA & Compilers"><span class="dot" style="background: #ffffff;"></span> Formal QA</button>
+                <button class="filter-btn" data-cat="Quantum & Energy"><span class="dot" style="background: #38bdf8;"></span> Quantum & Energy</button>
+                <button class="filter-btn" data-cat="Continuum Fields"><span class="dot" style="background: #c4b5fd;"></span> 418 Continuum</button>
             </div>
 
             <div class="controls-group">
@@ -674,9 +732,9 @@ def generate_html():
 
         <aside id="side-panel" class="side-panel">
             <button id="panel-close-btn" class="panel-close">✕</button>
-            <span id="panel-cat" class="panel-cat-badge">Frontier Engine</span>
-            <h2 id="panel-title" class="panel-title">Engine Name</h2>
-            <div id="panel-folder" class="panel-folder">tinkering/frontier_hybrids</div>
+            <span id="panel-cat" class="panel-cat-badge">Domain Focus</span>
+            <h2 id="panel-title" class="panel-title">Topic Title</h2>
+            <div id="panel-folder" class="panel-folder">Repository Folder</div>
             <p id="panel-desc" class="panel-desc">Description text goes here.</p>
             <div id="panel-tags" class="panel-tags"></div>
             <a id="panel-link" href="#" target="_blank" class="panel-btn">
@@ -691,7 +749,7 @@ def generate_html():
         </div>
 
         <footer class="footer-bar">
-            <div>🚀 <b>Controls:</b> Left-Click + Drag: Rotate | Scroll: Zoom | Right-Click: Pan | Click Star or Planet: Warp & Inspect</div>
+            <div>🚀 <b>Navigation:</b> Left-Click + Drag: Rotate | Scroll: Zoom | Right-Click: Pan | Click Star or Planet: Warp & Inspect</div>
             <div class="footer-links">
                 <a href="https://github.com/am-LLM" target="_blank">GitHub Profile</a>
                 <a href="https://github.com/am-LLM/tinkering" target="_blank">Tinkering Master Repo</a>
@@ -710,13 +768,15 @@ def generate_html():
         const THEMES = {{
             "theme-cyber": {{
                 catColors: {{
-                    "Frontier Engines": 0x00f0ff,
-                    "Business Strategy": 0xffd166,
-                    "AI & QA": 0xd946ef,
-                    "Defense & Aero": 0xff3366,
-                    "Bionics & Bio": 0x00ffaa,
+                    "Cyber & Post-Quantum": 0xa855f7,
+                    "Sales, Marketing & Strategy": 0xf59e0b,
+                    "Forecasting & Risk": 0xfacc15,
+                    "Cognitive AI & SLMs": 0xe879f9,
+                    "Defense & C-UAS": 0xff3366,
+                    "BCI & Interspecies Bio": 0x00ffaa,
+                    "Formal QA & Compilers": 0xffffff,
                     "Quantum & Energy": 0x38bdf8,
-                    "Continuum Fields": 0xa5b4fc
+                    "Continuum Fields": 0xc4b5fd
                 }},
                 lineColor: 0x00f0ff,
                 ambientColor: 0xffffff,
@@ -726,11 +786,13 @@ def generate_html():
             }},
             "theme-solar": {{
                 catColors: {{
-                    "Frontier Engines": 0xfbbf24,
-                    "Business Strategy": 0xf59e0b,
-                    "AI & QA": 0xf43f5e,
-                    "Defense & Aero": 0xe11d48,
-                    "Bionics & Bio": 0xd97706,
+                    "Cyber & Post-Quantum": 0xf43f5e,
+                    "Sales, Marketing & Strategy": 0xfbbf24,
+                    "Forecasting & Risk": 0xf59e0b,
+                    "Cognitive AI & SLMs": 0xfb7185,
+                    "Defense & C-UAS": 0xe11d48,
+                    "BCI & Interspecies Bio": 0xd97706,
+                    "Formal QA & Compilers": 0xffedd5,
                     "Quantum & Energy": 0xfef08a,
                     "Continuum Fields": 0xfde68a
                 }},
@@ -742,11 +804,13 @@ def generate_html():
             }},
             "theme-cobalt": {{
                 catColors: {{
-                    "Frontier Engines": 0x38bdf8,
-                    "Business Strategy": 0x60a5fa,
-                    "AI & QA": 0x818cf8,
-                    "Defense & Aero": 0x3b82f6,
-                    "Bionics & Bio": 0x06b6d4,
+                    "Cyber & Post-Quantum": 0x818cf8,
+                    "Sales, Marketing & Strategy": 0x60a5fa,
+                    "Forecasting & Risk": 0x38bdf8,
+                    "Cognitive AI & SLMs": 0xa5b4fc,
+                    "Defense & C-UAS": 0x3b82f6,
+                    "BCI & Interspecies Bio": 0x06b6d4,
+                    "Formal QA & Compilers": 0xe0f2fe,
                     "Quantum & Energy": 0x93c5fd,
                     "Continuum Fields": 0xbfdbfe
                 }},
@@ -758,11 +822,13 @@ def generate_html():
             }},
             "theme-matrix": {{
                 catColors: {{
-                    "Frontier Engines": 0x00ffaa,
-                    "Business Strategy": 0xa3e635,
-                    "AI & QA": 0x10b981,
-                    "Defense & Aero": 0x059669,
-                    "Bionics & Bio": 0x34d399,
+                    "Cyber & Post-Quantum": 0x10b981,
+                    "Sales, Marketing & Strategy": 0xa3e635,
+                    "Forecasting & Risk": 0x84cc16,
+                    "Cognitive AI & SLMs": 0x34d399,
+                    "Defense & C-UAS": 0x059669,
+                    "BCI & Interspecies Bio": 0x00ffaa,
+                    "Formal QA & Compilers": 0xdcfce7,
                     "Quantum & Energy": 0x6ee7b7,
                     "Continuum Fields": 0xa7f3d0
                 }},
@@ -774,11 +840,13 @@ def generate_html():
             }},
             "theme-slate": {{
                 catColors: {{
-                    "Frontier Engines": 0xffffff,
-                    "Business Strategy": 0xf1f5f9,
-                    "AI & QA": 0x38bdf8,
-                    "Defense & Aero": 0xf43f5e,
-                    "Bionics & Bio": 0x4ade80,
+                    "Cyber & Post-Quantum": 0xc084fc,
+                    "Sales, Marketing & Strategy": 0xfbbf24,
+                    "Forecasting & Risk": 0x38bdf8,
+                    "Cognitive AI & SLMs": 0xf472b6,
+                    "Defense & C-UAS": 0xf43f5e,
+                    "BCI & Interspecies Bio": 0x4ade80,
+                    "Formal QA & Compilers": 0xffffff,
                     "Quantum & Energy": 0xe2e8f0,
                     "Continuum Fields": 0x94a3b8
                 }},
@@ -793,55 +861,69 @@ def generate_html():
         let currentThemeKey = localStorage.getItem("starmap_theme") || "theme-cyber";
         let activeTheme = THEMES[currentThemeKey] || THEMES["theme-cyber"];
 
-        // Exact Unified Sector Anchors
+        // The 8 Distinct Sector Focus Planets
         const SECTORS = {{
-            "frontier": {{
-                name: "⚡ 70 FRONTIER ENGINES",
-                pos: {{ x: -130, y: 30, z: -70 }},
-                color: "#00f0ff",
-                hex: 0x00f0ff,
-                cat: "Frontier Engines"
+            "cyber": {{
+                name: "🛡️ CYBER-VAULT: PQC & SCADA",
+                pos: {{ x: -125, y: 45, z: -75 }},
+                color: "#a855f7",
+                hex: 0xa855f7,
+                cat: "Cyber & Post-Quantum"
             }},
-            "strategy": {{
-                name: "📈 BUSINESS & VALUATION",
-                pos: {{ x: 130, y: 35, z: 65 }},
-                color: "#ffd166",
-                hex: 0xffd166,
-                cat: "Business Strategy"
+            "sales_growth": {{
+                name: "💼 GROWTH-CORE: SALES & MARKETING",
+                pos: {{ x: 135, y: 45, z: 65 }},
+                color: "#f59e0b",
+                hex: 0xf59e0b,
+                cat: "Sales, Marketing & Strategy"
             }},
-            "ai": {{
-                name: "🤖 AI SWARMS & QA",
-                pos: {{ x: 0, y: 75, z: -10 }},
-                color: "#d946ef",
-                hex: 0xd946ef,
-                cat: "AI & QA"
+            "forecasting": {{
+                name: "📈 ORACLE-NEXUS: FORECASTING & RISK",
+                pos: {{ x: 115, y: -45, z: 95 }},
+                color: "#facc15",
+                hex: 0xfacc15,
+                cat: "Forecasting & Risk"
             }},
-            "defense": {{
-                name: "🛡️ DEFENSE & AERO",
-                pos: {{ x: -85, y: -45, z: 110 }},
+            "cognitive_ai": {{
+                name: "🧠 COGNITIVE-SYNTH: AI & SLMS",
+                pos: {{ x: 0, y: 85, z: -20 }},
+                color: "#e879f9",
+                hex: 0xe879f9,
+                cat: "Cognitive AI & SLMs"
+            }},
+            "aegis_aero": {{
+                name: "🎯 AEGIS-AERO: DEFENSE & C-UAS",
+                pos: {{ x: -125, y: -40, z: 75 }},
                 color: "#ff3366",
                 hex: 0xff3366,
-                cat: "Defense & Aero"
+                cat: "Defense & C-UAS"
             }},
-            "bio": {{
-                name: "🧬 BCI & INTERSPECIES",
-                pos: {{ x: 95, y: -50, z: -85 }},
+            "neuro_bio": {{
+                name: "🧬 NEURO-BIO: BCI & INTERSPECIES",
+                pos: {{ x: 90, y: -50, z: -90 }},
                 color: "#00ffaa",
                 hex: 0x00ffaa,
-                cat: "Bionics & Bio"
+                cat: "BCI & Interspecies Bio"
             }},
-            "quantum": {{
-                name: "⚡ QUANTUM & SCADA",
-                pos: {{ x: -30, y: 25, z: -130 }},
+            "veritas_qa": {{
+                name: "🔬 VERITAS-QA: FORMAL SMT & COMPILERS",
+                pos: {{ x: -35, y: -55, z: -120 }},
+                color: "#ffffff",
+                hex: 0xffffff,
+                cat: "Formal QA & Compilers"
+            }},
+            "quantum_energy": {{
+                name: "⚡ QUANTUM-GRID: QUANTUM & ENERGY",
+                pos: {{ x: -40, y: 45, z: 120 }},
                 color: "#38bdf8",
                 hex: 0x38bdf8,
                 cat: "Quantum & Energy"
             }},
             "continuum": {{
                 name: "📚 418 FIELD CONTINUUM",
-                pos: {{ x: 0, y: -25, z: 0 }},
-                color: "#a5b4fc",
-                hex: 0xa5b4fc,
+                pos: {{ x: 0, y: -20, z: 0 }},
+                color: "#c4b5fd",
+                hex: 0xc4b5fd,
                 cat: "Continuum Fields"
             }}
         }};
@@ -873,7 +955,7 @@ def generate_html():
         scene.fog = new THREE.FogExp2(activeTheme.fogColor, 0.00025);
 
         const camera = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 4500);
-        camera.position.set(0, 160, 360);
+        camera.position.set(0, 160, 380);
 
         const renderer = new THREE.WebGLRenderer({{ canvas, antialias: true, alpha: true }});
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -899,7 +981,7 @@ def generate_html():
         pointLight2.position.set(120, -60, -100);
         scene.add(pointLight2);
 
-        // Background Starfield (Static background)
+        // Background Starfield
         const starGeo = new THREE.BufferGeometry();
         const starCount = 4000;
         const starPos = new Float32Array(starCount * 3);
@@ -913,7 +995,7 @@ def generate_html():
         const starPoints = new THREE.Points(starGeo, starMat);
         scene.add(starPoints);
 
-        // UNIFIED GALAXY ROOT GROUP (Everything stays 100% aligned together)
+        // Unified Galaxy Root Group
         const galaxyGroup = new THREE.Group();
         scene.add(galaxyGroup);
 
@@ -931,7 +1013,7 @@ def generate_html():
             ctx.fill();
             ctx.stroke();
 
-            ctx.font = "bold 34px 'Outfit', sans-serif";
+            ctx.font = "bold 32px 'Outfit', sans-serif";
             ctx.fillStyle = "#ffffff";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
@@ -946,7 +1028,7 @@ def generate_html():
             return sprite;
         }}
 
-        // Glowing Star Sprite Texture Generator
+        // Glowing Star Texture Generator
         function createGlowSprite(colorHex) {{
             const canvas = document.createElement("canvas");
             canvas.width = 128;
@@ -973,7 +1055,7 @@ def generate_html():
             const sphereMat = new THREE.MeshStandardMaterial({{
                 color: sector.hex,
                 emissive: sector.hex,
-                emissiveIntensity: 0.6,
+                emissiveIntensity: 0.65,
                 roughness: 0.2,
                 metalness: 0.8
             }});
@@ -984,37 +1066,37 @@ def generate_html():
                 name: sector.name,
                 category: sector.cat,
                 cluster: key,
-                desc: `Central gravitational focus for the ${{sector.name}} sector. Orbiting stars represent verified engines and modules.`
+                desc: `Central planetary anchor for ${{sector.name}}. Orbiting stars represent verified engineering engines, research papers, and models.`
             }};
             galaxyGroup.add(planetMesh);
             sectorPlanetMeshes.push(planetMesh);
 
-            // 2. Orbital Rings around Focus Planet
-            const ringGeo = new THREE.RingGeometry(key === "continuum" ? 18 : 10, key === "continuum" ? 19.5 : 11.2, 32);
+            // 2. Orbital Rings
+            const ringGeo = new THREE.RingGeometry(key === "continuum" ? 20 : 10, key === "continuum" ? 21.5 : 11.2, 32);
             const ringMat = new THREE.MeshBasicMaterial({{
                 color: sector.hex,
                 side: THREE.DoubleSide,
                 transparent: true,
-                opacity: 0.5
+                opacity: 0.55
             }});
             const ringMesh = new THREE.Mesh(ringGeo, ringMat);
             ringMesh.position.set(center.x, center.y, center.z);
             ringMesh.rotation.x = Math.PI / 2.3;
             galaxyGroup.add(ringMesh);
 
-            // 3. Volumetric Nebula Halo Sphere (Locked in exact sector position)
-            const nebGeo = new THREE.SphereGeometry(key === "continuum" ? 65 : 42, 16, 16);
+            // 3. Volumetric Nebula Sphere
+            const nebGeo = new THREE.SphereGeometry(key === "continuum" ? 68 : 42, 16, 16);
             const nebMat = new THREE.MeshBasicMaterial({{
                 color: sector.hex,
                 wireframe: true,
                 transparent: true,
-                opacity: 0.07
+                opacity: 0.08
             }});
             const nebMesh = new THREE.Mesh(nebGeo, nebMat);
             nebMesh.position.set(center.x, center.y, center.z);
             galaxyGroup.add(nebMesh);
 
-            // 4. Sector Title Billboard (Hovering precisely 24 units above planet)
+            // 4. Sector Title Billboard
             const billboard = createTextSprite(sector.name, sector.color);
             billboard.position.set(center.x, center.y + 24, center.z);
             galaxyGroup.add(billboard);
@@ -1032,21 +1114,19 @@ def generate_html():
             let pos;
 
             if (item.cluster === "continuum") {{
-                // Orbital accretion disc centered exactly on continuum planet
                 const angle = index * 0.16;
-                const radius = 25 + Math.sqrt(index) * 10.5;
+                const radius = 26 + Math.sqrt(index) * 10.5;
                 pos = new THREE.Vector3(
                     center.x + Math.cos(angle) * radius + (Math.random() - 0.5) * 16,
                     center.y + (Math.random() - 0.5) * 24,
                     center.z + Math.sin(angle) * radius + (Math.random() - 0.5) * 16
                 );
             }} else {{
-                // Clustered planetary orbit around sector focus
                 const u = Math.random();
                 const v = Math.random();
                 const theta = u * 2.0 * Math.PI;
                 const phi = Math.acos(2.0 * v - 1.0);
-                const r = 10 + Math.cbrt(Math.random()) * 32;
+                const r = 10 + Math.cbrt(Math.random()) * 30;
                 pos = new THREE.Vector3(
                     center.x + r * Math.sin(phi) * Math.cos(theta),
                     center.y + r * Math.sin(phi) * Math.sin(theta),
@@ -1073,7 +1153,7 @@ def generate_html():
             nodeDataMap.set(item.id, {{ mesh: sprite, data: item }});
         }});
 
-        // Constellation Lines (Inside galaxyGroup)
+        // Constellation Lines
         const lineMat = new THREE.LineBasicMaterial({{ color: activeTheme.lineColor, transparent: true, opacity: 0.28 }});
         const lineGeo = new THREE.BufferGeometry();
         const linePositions = [];
@@ -1092,7 +1172,7 @@ def generate_html():
         const linesMesh = new THREE.LineSegments(lineGeo, lineMat);
         galaxyGroup.add(linesMesh);
 
-        // Apply Theme Function
+        // Theme Application
         function applyTheme(themeKey) {{
             const theme = THEMES[themeKey];
             if (!theme) return;
@@ -1122,7 +1202,7 @@ def generate_html():
             applyTheme(e.target.value);
         }});
 
-        // UI Element References
+        // UI Panel & Interaction Handlers
         const tooltip = document.getElementById("tooltip");
         const tooltipCat = document.getElementById("tooltip-cat");
         const tooltipTitle = document.getElementById("tooltip-title");
@@ -1140,7 +1220,7 @@ def generate_html():
 
         function showPanel(item) {{
             const colHex = "#" + (activeTheme.catColors[item.category] || 0x00f0ff).toString(16).padStart(6, '0');
-            panelCat.textContent = item.category || "SECTOR FOCUS";
+            panelCat.textContent = item.category || "PLANETARY FOCUS";
             panelCat.style.color = colHex;
             panelCat.style.borderColor = colHex;
             panelCat.style.background = colHex + "22";
@@ -1150,7 +1230,7 @@ def generate_html():
             panelLink.href = item.url || "https://github.com/am-LLM/tinkering";
 
             panelTags.innerHTML = "";
-            (item.tags || ["Sector Focus", "Domain Cluster"]).forEach(tag => {{
+            (item.tags || ["Planetary Focus", "Domain Constellation"]).forEach(tag => {{
                 const t = document.createElement("span");
                 t.className = "tag-pill";
                 t.textContent = tag;
@@ -1187,7 +1267,6 @@ def generate_html():
             renderer.setSize(window.innerWidth, window.innerHeight);
         }});
 
-        // Raycasting for both Stars and Focus Planets
         const interactiveObjects = [...nodeMeshes, ...sectorPlanetMeshes];
 
         window.addEventListener("mousemove", (e) => {{
@@ -1205,7 +1284,7 @@ def generate_html():
                 if (hoveredNode !== hit) {{
                     hoveredNode = hit;
                     const colHex = "#" + (activeTheme.catColors[hit.userData.category] || 0x00f0ff).toString(16).padStart(6, '0');
-                    tooltipCat.textContent = hit.userData.category || "SECTOR FOCUS";
+                    tooltipCat.textContent = hit.userData.category || "PLANETARY FOCUS";
                     tooltipCat.style.color = colHex;
                     tooltipTitle.textContent = hit.userData.name;
                     tooltip.style.borderColor = colHex;
@@ -1238,7 +1317,7 @@ def generate_html():
         document.getElementById("reset-cam-btn").addEventListener("click", () => {{
             sidePanel.classList.remove("open");
             controls.autoRotate = true;
-            new TWEEN.Tween(camera.position).to({{ x: 0, y: 160, z: 360 }}, 1000).easing(TWEEN.Easing.Cubic.Out).start();
+            new TWEEN.Tween(camera.position).to({{ x: 0, y: 160, z: 380 }}, 1000).easing(TWEEN.Easing.Cubic.Out).start();
             new TWEEN.Tween(controls.target).to({{ x: 0, y: 0, z: 0 }}, 1000).easing(TWEEN.Easing.Cubic.Out).start();
         }});
 
@@ -1307,12 +1386,11 @@ def generate_html():
             }}
         }});
 
-        // Animation Loop (Unified lockstep rotation)
+        // Animation Loop
         function animate(time) {{
             requestAnimationFrame(animate);
             TWEEN.update();
             controls.update();
-            // Subtle unified galaxy drift
             galaxyGroup.rotation.y += 0.0002;
             renderer.render(scene, camera);
         }}
