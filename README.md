@@ -1,6 +1,11 @@
 # ⚡ Ali Malik (`@am-LLM`)
 ### **AI Systems Architect & Technical Program Lead • Enterprise Strategy & Market Analyst • Quality Assurance & Verification Engineer**
 
+[![🌌 LAUNCH 3D INTERACTIVE STARMAP](https://img.shields.io/badge/🌌_3D_Interactive_Starmap-EXPLORE_500+_TOPICS-0284c7?style=for-the-badge&logo=three.js&logoColor=white)](https://am-LLM.github.io/am-LLM/)
+[![Master Repository](https://img.shields.io/badge/Master_Repo-am--LLM%2Ftinkering-7c3aed?style=for-the-badge&logo=github&logoColor=white)](https://github.com/am-LLM/tinkering)
+
+> 🚀 **[Click Here to Launch the 3D Universal Knowledge Starmap](https://am-LLM.github.io/am-LLM/)** — *An interactive 3D WebGL universe to seamlessly fly through 500+ topics across 70 Frontier Hybrid Engines, Business & Valuation Frameworks, AI Swarms, Formal QA Gates, and the 418 Field Continuum.*
+
 ```
                                   ALI MALIK — MULTI-DISCIPLINARY CAPABILITY MATRIX
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
