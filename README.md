@@ -67,8 +67,6 @@ My background bridges deep technical execution with high-level strategic oversig
 ### 📚 [`am-LLM/publications`](https://github.com/am-LLM/publications) — Scientific Publications & Foundational ML Architectures
 * **⚡ [`TinyWonder, Zero base LORA adapter`](https://github.com/am-LLM/publications/tree/main/TinyWonder,%20Zero%20base%20LORA%20adapter)**: Zero-Base LoRA Adapter Research & Stacking Attenuation.
 * **📄 [Paper 1: Zero-Base LoRA Host Architecture](https://github.com/am-LLM/publications/blob/main/TinyWonder,%20Zero%20base%20LORA%20adapter/paper1_zero_base_host.pdf)**: Decoupled multi-tenant adapter execution, zero-base runtime lanes, and memory-mapped page-permission transport.
-* **📄 [Paper 2: Multi-Adapter Stacking Attenuation](https://github.com/am-LLM/publications/blob/main/TinyWonder,%20Zero%20base%20LORA%20adapter/paper2_stacking_attenuation.pdf)**: Dynamic attenuation schedules, harmonic interference mitigation, and multi-shard perplexity confidence intervals for composite LoRA stacks.
-* **🔬 [Artifacts & Vector Figures](https://github.com/am-LLM/publications/tree/main/TinyWonder,%20Zero%20base%20LORA%20adapter/papers/figures)**: Full vector diagrams, data telemetry, and standard-library publication hygiene audit gates.
 
 ### 🎓 [`am-LLM/certification-prep`](https://github.com/am-LLM/certification-prep) — Professional Engineering Curricula & Applied Labs
 * **Offensive Security & Cyber Resilience**: Comprehensive frameworks, cheat sheets, and Python verification PoCs for **OSCP**, **OSWE**, **CISSP**, **CEH**, **CHFI**, and **GICSP**.
